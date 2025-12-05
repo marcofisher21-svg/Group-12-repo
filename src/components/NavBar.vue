@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
@@ -11,10 +12,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <router-link to="/dashboard" class="nav-link active" aria-current="page" >Dashboard</router-link>
         </li>
         <li class="nav-item">
-              <a class="nav-link attendance" href="#">Attendance</a>
+              <router-link to="/attendance" class="nav-link attendance" > Attendance</router-link>
           </li>
         <li class="nav-item">
             <a class="nav-link attendance payroll" href="#">Payroll</a>
