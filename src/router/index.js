@@ -3,6 +3,7 @@ import DashboardPage from '../views/DashboardPage.vue'
 import loginPage from '../views/loginPage.vue'
 import AttendancePage from '../views/attendancePage.vue'
 import PayrollPage from '../views/PayrollPage.vue'
+import EmployeePage from '../views/employeePage.vue'
 
 const routes =  [
     {
@@ -25,6 +26,11 @@ const routes =  [
     path: '/payroll',
     name: 'payroll',
     component: PayrollPage
+  },
+  {
+    path: '/employee',
+    name: 'employee',
+    component: EmployeePage
   }
   ]
 
