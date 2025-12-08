@@ -61,12 +61,12 @@ onMounted(async () => {
   background-color: aliceblue;
   padding: 15px;
   margin: 5% auto;
-  width: 800px;
+   
   box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
 }
 .card {
-  width: 800px;
+
   align-items: center;
   justify-content: center;
   margin: 15px auto;
