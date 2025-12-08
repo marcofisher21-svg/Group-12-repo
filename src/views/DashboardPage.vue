@@ -31,29 +31,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavBar />
-  <h1>Dashboard</h1>
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">Employees:{{ totalEmployees }}</div>
-      <div class="col">Time off requests:{{ totalLeaveRequests }}</div>
-    </div>
-  </div>
-
-  <div class="card" style="">
-    <div class="card-body">
-      <h5 class="card-title">Time-off requests:</h5>
-      <ul>
-        <li v-for="emp in leaveRequesters" :key="emp.name">
-          <strong>{{ emp.name }}</strong>
-          <ul>
-            <li v-for="req in emp.requests" :key="req.date">
-              {{ req.date }} - {{ req.reason }} ({{ req.status }})
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+  <div class="navigation">
+<NavBar/>
   </div>
 </template>
 <style scoped>
