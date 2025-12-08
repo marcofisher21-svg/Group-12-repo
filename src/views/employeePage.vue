@@ -37,16 +37,23 @@ onMounted(async () => {
 </template>
 <style scoped>
 
-
 .card-body {
   background-color: aliceblue;
- width: 850px;
-  align-items: center;
-  justify-content: center;
+  padding: 30px;
   margin: 5% auto;
   box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
 }
+
+.card {
+  margin: 10px;
+}
+
 h1 {
   text-align: center;
   margin: 5px;
