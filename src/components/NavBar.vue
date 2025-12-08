@@ -18,7 +18,7 @@ import { RouterLink } from 'vue-router';
               <router-link to="/attendance" class="nav-link attendance" > Attendance</router-link>
           </li>
         <li class="nav-item">
-            <a class="nav-link attendance payroll" href="#">Payroll</a>
+            <router-link to="/payroll" class="nav-link attendance payroll" href="#">Payroll</router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link attendance employee" href="#">Employees</a>
