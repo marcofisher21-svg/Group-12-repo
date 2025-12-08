@@ -7,11 +7,11 @@ const leaveRequesters = ref([]);
 
 onMounted(async () => {
   try {
-    const empRes = await fetch("/employee_info.json");
+    const empRes = await fetch("/..employee_info.json");
     const employeesData = await empRes.json();
     totalEmployees.value = employeesData.employeeInformation.length;
 
-    const leaveRes = await fetch("/attendance.json");
+    const leaveRes = await fetch("/..attendance.json");
     const leaveData = await leaveRes.json();
     totalLeaveRequests.value = leaveData.attendanceAndLeave.reduce(
       (acc, emp) => acc + emp.leaveRequests.length,
@@ -61,7 +61,7 @@ onMounted(async () => {
   background-color: aliceblue;
   padding: 15px;
   margin: 5% auto;
-   
+
   box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
 }

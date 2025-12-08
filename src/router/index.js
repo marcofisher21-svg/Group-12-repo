@@ -20,6 +20,7 @@ const routes =  [
     name:'attendance',
     component: AttendancePage
   }
+  
   ]
 
 const router = createRouter({
