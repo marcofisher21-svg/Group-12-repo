@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import loginPage from "../views/loginPage.vue";
 import DashboardPage from "../views/DashboardPage.vue";
-import payrollPage from "../views/PayRollModal.vue";
-import payslipPage from "../views/PaySlipModal.vue";
-import PayRollModal from "../views/PayRollModal.vue";
-import PaySlipModal from "../views/PaySlipModal.vue";
+import PayRollModal from "../views/pay-roll-modal.vue";
+import PaySlipModal from "../views/pay-slip-modal.vue";
 
 const routes =  [
     {
