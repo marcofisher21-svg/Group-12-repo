@@ -34,6 +34,14 @@ onMounted(async () => {
   }
 });
 
+const statusClass = (s) => {
+  if (!s) return ''
+  const str = String(s).toLowerCase()
+  if (str === 'present') return 'status-present'
+  if (str === 'absent') return 'status-absent'
+  return 'status-other'
+}
+
 </script>
 <template>
   <NavBar />
@@ -71,9 +79,9 @@ onMounted(async () => {
                 </thead>
                 <tbody>
                   <tr
-                    v-for="rec in emp.attendance"
+                    v-for="rec in (emp.attendance || [])"
                     :key="emp.employeeId + '-' + rec.date"
-                    :class="rec.status === 'Present' ? 'bg-success text-white' : 'bg-danger text-white'"
+                    :class="statusClass(rec.status)"
                   >
                     <td>{{ rec.date }}</td>
                     <td>{{ rec.status }}</td>
@@ -123,5 +131,34 @@ onMounted(async () => {
 h1 {
   text-align: center;
   margin: 5px;
+}
+
+.status-present {
+  background-color: #d4edda; 
+  color: #155724;
+}
+
+.status-absent {
+  background-color: #f8d7da; 
+  color: #721c24;
+}
+
+.status-other {
+  background-color: #eef2f5; 
+  color: #333;
+}
+
+
+.status-present td {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+}
+.status-absent td {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}
+.status-other td {
+  background-color: #eef2f5 !important;
+  color: #333 !important;
 }
 </style>
