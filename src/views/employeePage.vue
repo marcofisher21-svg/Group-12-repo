@@ -9,7 +9,8 @@ onMounted(async () => {
   try {
     const res = await fetch('/employee_info.json')
     if (!res.ok) throw new Error(res.statusText)
-    employees.value = await res.json()
+    const data = await res.json()
+    employees.value = data.employeeInformation
   } catch (err) {
     console.error('Failed to load employees', err)
   }
@@ -18,44 +19,82 @@ onMounted(async () => {
 </script>
 <template>
   <NavBar />
-<div class="card mt-3">
-      <div class="card-body">
-        <h5 class="card-title">Employee Info</h5>
-    <div v-for="employee in employees" :key="employee.employeeId" class="card" style="width: 18rem;">
-       <img src="https://imgs.search.brave.com/c-iHTuBHs88C0IRkAJNGjCGzMDQyPl45bVol3d3ngDg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzBmLzEz/LzE5LzBmMTMxOTc5/NzkyYmNhMzdjMzQz/N2NjN2QxOGYzYzMy/LmpwZw" class="card-img-top" alt="employee photo">
-      <div class="card-body">
-      <p class="name">{{ employee.name }}</p>
-      <p class="position">{{ employee.position }}</p>
-      <p class="department">{{ employee.department }}</p>
-      <p class="salary">{{ employee.salary }}</p>
-      <p class="employmentHistory">{{ employee.employmentHistory }}</p>
-      <p class="contact">{{ employee.contact }}</p>
+  
+  <div class="container">
+    <h5 class="page-title">Employee Information</h5>
+    <div class="employees-row">
+      <div v-for="employee in employees" :key="employee.employeeId" class="employee-card">
+        <img src="https://imgs.search.brave.com/c-iHTuBHs88C0IRkAJNGjCGzMDQyPl45bVol3d3ngDg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzBmLzEz/LzE5LzBmMTMxOTc5/NzkyYmNhMzdjMzQz/N2NjN2QxOGYzYzMy/LmpwZw" class="card-img-top" alt="employee photo">
+        <div class="card-body">
+          <p class="name"><strong>{{ employee.name }}</strong></p>
+          <p class="position"><strong>Position:</strong> {{ employee.position }}</p>
+          <p class="department"><strong>Department:</strong> {{ employee.department }}</p>
+          <p class="salary"><strong>Salary:</strong> R {{ employee.salary }}</p>
+          <p class="employmentHistory"><strong>History:</strong> {{ employee.employmentHistory }}</p>
+          <p class="contact"><strong>Contact:</strong> {{ employee.contact }}</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 <style scoped>
 
-.card-body {
-  background-color: aliceblue;
-  padding: 30px;
-  margin: 5% auto;
-  box-shadow: 0 0 0.8px rgb(0, 0, 0);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  justify-content: center;
-  align-items: center;
+.container {
+  padding: 20px;
+  max-width: 100%;
 }
 
-.card {
-  margin: 10px;
-}
-
-h1 {
+.page-title {
   text-align: center;
-  margin: 5px;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #333;
 }
+
+.employees-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.employee-card {
+  width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.employee-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  background-color: #f8f9fa;
+  padding: 15px;
+  display: block;
+}
+
+.name {
+  font-size: 1.1rem;
+  margin: 8px 0;
+  color: #222;
+}
+
+.position, .department, .salary, .employmentHistory, .contact {
+  font-size: 0.85rem;
+  margin: 6px 0;
+  color: #555;
+}
+
 </style>
