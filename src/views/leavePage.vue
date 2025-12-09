@@ -1,11 +1,15 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import NavBar from "@/components/NavBar.vue";
 
 const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
 const leaveRequesters = ref([]);
+const newLeaveRequests = ref([]);
 
+const combinedLeaveRequesters = computed(() => {
+  return [...leaveRequesters.value, ...newLeaveRequests.value];
+});
 
 onMounted(async () => {
   try {
@@ -27,6 +31,27 @@ onMounted(async () => {
   }
 });
 
+const submitForm=()=>{
+    const fullName = document.getElementById("fullName").value;
+   const entitlement = document.getElementById("entitlement").value;
+  const startDate = document.getElementById("start_date").value;
+  const endDate = document.getElementById("end_date").value;
+  const session = document.getElementById("session").value;
+  const reason = document.getElementById("reason").value;
+
+  newLeaveRequests.value.push({
+    name: "Current User",   
+    requests: [
+      {
+        date: `${startDate} to ${endDate}`,
+        reason,
+        status: "Pending",
+        entitlement,
+        session,
+      },
+    ],
+  });  
+}
 
 </script>
 
@@ -47,6 +72,10 @@ onMounted(async () => {
 <div class="container">
   <div class="heading">Leave Application</div>
   <form class="form" action="">
+    <div class="input-field">
+      <label for="fullName">Full Name <span class="required">*</span></label>
+      <input type="text" id="fullName" placeholder="Enter your full name" required>
+    </div>
 
     <div class="input-field">
       <label for="entitlement">Entitlement <span class="required">*</span></label>
@@ -54,7 +83,7 @@ onMounted(async () => {
         <option>Select an option</option>
         <option>Annual Leave</option>
         <option>Sick Leave</option>
-        <option>Family Responsibility</option>
+        <option>Family Responsibility/Childcare</option>
       </select>
     </div>
 
@@ -94,7 +123,7 @@ onMounted(async () => {
 
 
     <div class="btn-container">
-      <button class="btn">Submit</button>
+      <button class="btn" @click="submitForm">Submit</button>
     </div>
   </form>
 </div>
@@ -104,7 +133,7 @@ onMounted(async () => {
     <div class="card-body">
       <h5 class="card-title">Time-off requests:</h5>
       <ul>
-        <li v-for="emp in leaveRequesters" :key="emp.name">
+        <li v-for="emp in combinedLeaveRequesters" :key="emp.name">
           <strong>{{ emp.name }}</strong>
           <ul>
             <li v-for="req in emp.requests" :key="req.date">
@@ -158,10 +187,11 @@ onMounted(async () => {
   color: #0b234b;
 }
 
-/* form layout */
+
 .form {
   width: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
@@ -185,20 +215,22 @@ onMounted(async () => {
   font-size: 0.92rem;
   color: var(--muted);
   margin-left: 4px;
+  font-weight: 500;
 }
 
 .input-field input,
 .input-field select,
 .input-field textarea,
 .input-field input[type="file"] {
-  padding: 10px 12px;
+  padding: 12px 14px;
   font-size: 0.98rem;
   border-radius: 8px;
-  border: 1px solid #dedede;
+  border: 1px solid #e0e0e0;
   width: 100%;
   box-sizing: border-box;
   background: #fff;
   color: #082344;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-field textarea {
@@ -218,24 +250,34 @@ onMounted(async () => {
 
 .btn-container {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
+  justify-content: center;
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .btn {
-  padding: 10px 18px;
+  padding: 12px 32px;
   font-size: 0.95rem;
+  font-weight: 600;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, var(--accent), #0a63ff);
+  background: linear-gradient(135deg, #0034de, #0a63ff);
   color: #fff;
   cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 52, 222, 0.2);
 }
 
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(0); }
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 52, 222, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 52, 222, 0.2);
+}
 
 .toggle {
   display: flex;
@@ -244,7 +286,7 @@ onMounted(async () => {
   justify-content: flex-start;
 }
 
-/* list of requests */
+
 .card .card-body {
   background: transparent;
   padding: 0;
@@ -253,11 +295,11 @@ onMounted(async () => {
 
 ul { padding-left: 18px; }
 
-/* responsive adjustments */
+
 @media (max-width: 640px) {
   .row { flex-direction: column; }
   .page-card,
   .container { margin: 12px; padding: 16px; }
-  .btn-container { justify-content: center; }
+  .btn-container { justify-content: center; margin-top: 20px; }
 }
 </style>
