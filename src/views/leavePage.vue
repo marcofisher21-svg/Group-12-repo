@@ -31,26 +31,58 @@ onMounted(async () => {
   }
 });
 
-const submitForm=()=>{
-    const fullName = document.getElementById("fullName").value;
-   const entitlement = document.getElementById("entitlement").value;
+const submitForm = () => {
+  const fullName = document.getElementById("fullName").value.trim();
+  const entitlement = document.getElementById("entitlement").value;
   const startDate = document.getElementById("start_date").value;
   const endDate = document.getElementById("end_date").value;
   const session = document.getElementById("session").value;
-  const reason = document.getElementById("reason").value;
+  const reason = document.getElementById("reason").value.trim();
 
-  newLeaveRequests.value.push({
-    name: "Current User",   
-    requests: [
-      {
-        date: `${startDate} to ${endDate}`,
-        reason,
-        status: "Pending",
-        entitlement,
-        session,
-      },
-    ],
-  });  
+  if (!fullName || !entitlement || !startDate || !endDate || !reason) {
+    alert("Please fill in all required fields (Full Name, Entitlement, From, To, Reason)");
+    return;
+  }
+  if (new Date(endDate) < new Date(startDate)) {
+    alert("End date cannot be before start date");
+    return;
+  }
+
+  
+  const existingEmp = newLeaveRequests.value.find(emp => emp.name === fullName);
+  
+  const newRequest = {
+    date: startDate === endDate ? startDate : `${startDate} to ${endDate}`,
+    reason,
+    status: "Pending",
+    entitlement,
+    session,
+  };
+
+  if (existingEmp) {
+    
+    existingEmp.requests.push(newRequest);
+  } else {
+    
+    newLeaveRequests.value.push({
+      name: fullName,
+      requests: [newRequest],
+    });
+  }
+
+
+  totalLeaveRequests.value = combinedLeaveRequesters.value.reduce(
+    (acc, emp) => acc + emp.requests.length,
+    0
+  );
+
+
+  document.getElementById("fullName").value = "";
+  document.getElementById("entitlement").value = "";
+  document.getElementById("start_date").value = "";
+  document.getElementById("end_date").value = "";
+  document.getElementById("session").value = "Full Day";
+  document.getElementById("reason").value = "";
 }
 
 </script>
