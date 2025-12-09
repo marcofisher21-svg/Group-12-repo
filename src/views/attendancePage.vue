@@ -7,7 +7,8 @@ const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
 const showAvailableOnly = ref(false);
-const filterStatus = ref('all'); 
+const filterStatus = ref('all');
+const leaveRequesters = ref([]); 
 
 const filteredAttendance = computed(() => {
   if (filterStatus.value === 'all') {
