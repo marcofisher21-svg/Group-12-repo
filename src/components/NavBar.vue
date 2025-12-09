@@ -25,10 +25,10 @@ import  HRlogo from '../assets/hr logo.webp'
               <router-link to="/attendance" class="nav-link attendance" > Attendance</router-link>
           </li>
         <li class="nav-item">
-            <router-link to="/payroll" class="nav-link attendance payroll" href="#">Payroll</router-link>
+            <router-link to="/payroll" class="nav-link attendance payroll" >Payroll</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/employee" class="nav-link attendance employee" href="nav-link employee">Employees</router-link>
+          <router-link to="/employee" class="nav-link attendance employee" >Employees</router-link>
         </li>
       </ul>
       <form class="d-flex" role="search">
