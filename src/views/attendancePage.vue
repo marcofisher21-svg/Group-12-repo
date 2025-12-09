@@ -1,26 +1,127 @@
 <script setup>
-import NavBar from '../components/NavBar.vue';
+import { ref, onMounted } from "vue";
+import NavBar from "@/components/NavBar.vue";
+
+const people = ref([]); 
+const totalEmployees = ref(0);
+const totalLeaveRequests = ref(0);
+const totalAttendanceRecordings = ref(0);
+const leaveRequesters = ref([]);
+
+
+onMounted(async () => {
+  try {
+    const res = await fetch("/attendance.json");
+    const data = await res.json();
+
+    const list = data.attendanceAndLeave || [];
+    people.value = list;
+
+  
+    totalEmployees.value = list.length;
+    totalLeaveRequests.value = list.reduce((sum, p) => sum + (p.leaveRequests?.length || 0), 0);
+    totalAttendanceRecordings.value = list.reduce((sum, p) => sum + (p.attendance?.length || 0), 0);
+
+    leaveRequesters.value = list
+      .filter(emp => emp.leaveRequests && emp.leaveRequests.length > 0)
+      .map(emp => ({
+        name: emp.name,
+        requests: emp.leaveRequests
+      }));
+
+  } catch (err) {
+    console.error("Error loading attendance.json:", err);
+  }
+});
+
 </script>
 <template>
   <NavBar />
-    <div class="card-body">
-      <h5 class="card-title">Attendance {{}}</h5>
-      <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk of the card’s
-        content.
-      </p>
+  <div class="card-body">
 
+    <h5 class="card-title">Attendance Overview</h5>
+
+    <div class="container text-center mb-3">
+      <div class="row">
+        <div class="col">Employees: {{ totalEmployees }}</div>
+        <div class="col">Attendance Recordings: {{ totalAttendanceRecordings }}</div>
+        <div class="col">Leave requests: {{ totalLeaveRequests }}</div>
+      </div>
     </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title">Attendance Records</h5>
+
+        <div v-if="people.length === 0" class="text-center">No attendance data found.</div>
+
+        <div v-else>
+          <div v-for="emp in people" :key="emp.employeeId" class="mb-4">
+            <h6 style="background:#f7f9fb;padding:10px;border-radius:6px;margin:0">
+              <strong>{{ emp.name }}</strong> <small class="text-muted">(#{{ emp.employeeId }})</small>
+            </h6>
+
+            <div style="overflow-x:auto;margin-top:8px">
+              <table class="table table-sm table-bordered">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="rec in emp.attendance"
+                    :key="emp.employeeId + '-' + rec.date"
+                    :class="rec.status === 'Present' ? 'bg-success text-white' : 'bg-danger text-white'"
+                  >
+                    <td>{{ rec.date }}</td>
+                    <td>{{ rec.status }}</td>
+                  </tr>
+                  <tr v-if="!(emp.attendance && emp.attendance.length)">
+                    <td colspan="2" class="text-center">No attendance records for this employee.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+   <div class="card" style="">
+    <div class="card-body">
+      <h5 class="card-title">Time-off requests:</h5>
+      <ul>
+        <li v-for="emp in leaveRequesters" :key="emp.name">
+          <strong>{{ emp.name }}</strong>
+          <ul>
+            <li v-for="req in emp.requests" :key="req.date">
+              {{ req.date }} - {{ req.reason }} ({{ req.status }})
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  </div>
 </template>
 <style scoped>
+
+
 .card-body {
   background-color: aliceblue;
-  padding: 15px;
+ width: 850px;
+  align-items: center;
+  justify-content: center;
   margin: 5% auto;
-  width: 800px;
   box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
 }
-
+h1 {
+  text-align: center;
+  margin: 5px;
+}
 </style>

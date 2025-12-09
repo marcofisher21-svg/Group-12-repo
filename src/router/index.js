@@ -1,8 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router";
-import loginPage from "../views/loginPage.vue";
-import DashboardPage from "../views/DashboardPage.vue";
-import PayRollModal from "../views/pay-roll-modal.vue";
-import PaySlipModal from "../views/pay-slip-modal.vue";
+import { createRouter, createWebHistory } from 'vue-router'
+import DashboardPage from '../views/DashboardPage.vue'
+import loginPage from '../views/loginPage.vue'
+import AttendancePage from '../views/attendancePage.vue'
+import PayrollPage from '../views/PayrollPage.vue'
+import EmployeePage from '../views/employeePage.vue'
+
+
+
 
 const routes =  [
     {
@@ -17,9 +21,20 @@ const routes =  [
     component: DashboardPage
   },
   {
+    path:'/attendance',
+    name:'attendance',
+    component: AttendancePage
+  },
+  {
     path: '/payroll',
     name: 'payroll',
-    component: PayRollModal
+    component: PayrollPage
+  },
+  {
+    path: '/employee',
+    name: 'employee',
+    component: EmployeePage
+    
   }
   
   ]
