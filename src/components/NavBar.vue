@@ -1,11 +1,18 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import  HRlogo from '../assets/hr logo.webp'
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+
+    <router-link to="/dashboard">
+      <img :src="HRlogo"
+      height="40"
+      />
+    </router-link>
+    <a :src class="navbar-brand" href=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,7 +28,7 @@ import { RouterLink } from 'vue-router';
             <router-link to="/payroll" class="nav-link attendance payroll" href="#">Payroll</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link attendance employee" href="#">Employees</a>
+          <router-link to="/employee" class="nav-link attendance employee" href="nav-link employee">Employees</router-link>
         </li>
       </ul>
       <form class="d-flex" role="search">
