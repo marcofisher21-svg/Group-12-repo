@@ -5,8 +5,7 @@ import NavBar from "@/components/NavBar.vue";
 const people = ref([]);
 const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
-const totalAttendanceRecordings = ref(0);
-const leaveRequesters = ref([]);
+
 
 
 onMounted(async () => {
@@ -53,7 +52,6 @@ const statusClass = (s) => {
       <div class="row">
         <div class="col">Employees: {{ totalEmployees }}</div>
         <div class="col">Attendance Recordings: {{ totalAttendanceRecordings }}</div>
-        <div class="col">Leave requests: {{ totalLeaveRequests }}</div>
       </div>
     </div>
 
@@ -98,21 +96,6 @@ const statusClass = (s) => {
       </div>
     </div>
 
-   <div class="card" style="">
-    <div class="card-body">
-      <h5 class="card-title">Time-off requests:</h5>
-      <ul>
-        <li v-for="emp in leaveRequesters" :key="emp.name">
-          <strong>{{ emp.name }}</strong>
-          <ul>
-            <li v-for="req in emp.requests" :key="req.date">
-              {{ req.date }} - {{ req.reason }} ({{ req.status }})
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
 
   </div>
 </template>
