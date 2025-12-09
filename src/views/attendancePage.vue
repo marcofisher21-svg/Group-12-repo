@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import NavBar from "@/components/NavBar.vue";
 
-const people = ref([]); 
+const people = ref([]);
 const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
@@ -17,7 +17,7 @@ onMounted(async () => {
     const list = data.attendanceAndLeave || [];
     people.value = list;
 
-  
+
     totalEmployees.value = list.length;
     totalLeaveRequests.value = list.reduce((sum, p) => sum + (p.leaveRequests?.length || 0), 0);
     totalAttendanceRecordings.value = list.reduce((sum, p) => sum + (p.attendance?.length || 0), 0);
@@ -121,7 +121,7 @@ const statusClass = (s) => {
 
 .card-body {
   background-color: aliceblue;
- width: 850px;
+ width: 750px;
   align-items: center;
   justify-content: center;
   margin: 5% auto;
