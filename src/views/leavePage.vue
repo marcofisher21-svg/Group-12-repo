@@ -119,184 +119,145 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+:root {
+  --card-bg: #f5fbff;
+  --accent: #0034de;
+  --muted: #8d8d8d;
+  --radius: 10px;
+}
+
+.page-card,
 .card-body {
-  background-color: aliceblue;
-  width: 500px;
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  margin: 2% auto;
-  box-shadow: 0 0 0.8px rgb(0, 0, 0);
-  border-radius: 10px;
-}
-h1 {
-  text-align: center;
-  margin: 5px;
-}
-form {
-  background-color: aliceblue;
-  width: 500px;
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  margin: 2% auto;
-  box-shadow: 0 0 0.8px rgb(0, 0, 0);
-  border-radius: 10px;
+  background: var(--card-bg);
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 20px 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(3, 20, 80, 0.06);
 }
 
+.card-title {
+  margin: 0 0 12px 0;
+  font-size: 1.15rem;
+  color: #0b234b;
+}
 
-  .container {
-  border: solid 1px #8d8d8d;
-  padding: 20px;
-  border-radius: 20px;
-  background-color: #fff;
+.container {
+  max-width: 760px;
+  margin: 12px auto;
+  padding: 18px;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  background: #fff;
 }
 
 .container .heading {
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-  font-weight: bolder;
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+  font-weight: 700;
+  color: #0b234b;
 }
 
+/* form layout */
 .form {
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form .btn-container {
-  width: 200px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.form .btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  border-radius: 10px;
-  border: solid 1px #1034aa;
-  border-bottom: solid 1px #90c2ff;
-  background: linear-gradient(135deg, #0034de, #006eff);
-  color: #fff;
-  font-weight: bolder;
-  transition: all 0.2s ease;
-  box-shadow: 0px 2px 3px #000d3848, inset 0px 4px 5px #0070f0,
-    inset 0px -4px 5px #002cbb;
-}
-
-.form .btn:active {
-  box-shadow: inset 0px 4px 5px #0070f0, inset 0px -4px 5px #002cbb;
-  transform: scale(0.995);
-}
-
-.input-field {
-  position: relative;
-}
-
-.input-field label {
-  position: absolute;
-  color: #8d8d8d;
-  pointer-events: none;
-  background-color: transparent;
-  left: 15px;
-  transform: translateY(0.6rem);
-  transition: all 0.3s ease;
-}
-
-.input-field input {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: solid 1px #8d8d8d;
-  letter-spacing: 1px;
   width: 100%;
-}
-
-.input-field input:focus,
-.input-field input:valid {
-  outline: none;
-  border: solid 1px #0034de;
-}
-
-.input-field input:focus ~ label,
-.input-field input:valid ~ label {
-  transform: translateY(-51%) translateX(-10px) scale(0.8);
-  background-color: #fff;
-  padding: 0px 5px;
-  color: #0034de;
-  font-weight: bold;
-  letter-spacing: 1px;
-  border: none;
-  border-radius: 100px;
-}
-
-.form .passicon {
-  cursor: pointer;
-  font-size: 1.3rem;
-  position: absolute;
-  top: 6px;
-  right: 8px;
-}
-
-.form .close {
-  display: none;
-}
-
-.required {
-  color: red;
+  display: block;
+  gap: 18px;
 }
 
 .row {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .row .input-field {
-  flex: 1;
+  flex: 1 1 220px;
 }
 
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-field label {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.input-field input,
 .input-field select,
-.input-field textarea {
-  padding: 10px 15px;
-  font-size: 1rem;
+.input-field textarea,
+.input-field input[type="file"] {
+  padding: 10px 12px;
+  font-size: 0.98rem;
   border-radius: 8px;
-  border: solid 1px #8d8d8d;
-  letter-spacing: 1px;
+  border: 1px solid #dedede;
   width: 100%;
-  font-family: inherit;
+  box-sizing: border-box;
+  background: #fff;
+  color: #082344;
 }
 
+.input-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.input-field input:focus,
 .input-field select:focus,
 .input-field textarea:focus {
   outline: none;
-  border: solid 1px #0034de;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 52, 222, 0.06);
 }
 
-.input-field textarea {
-  resize: vertical;
-  min-height: 100px;
+.required { color: #d04545; }
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
 }
 
-.input-field input[type="file"] {
-  padding: 10px 15px;
-  font-size: 1rem;
+.btn {
+  padding: 10px 18px;
+  font-size: 0.95rem;
   border-radius: 8px;
-  border: solid 1px #8d8d8d;
-  width: 100%;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), #0a63ff);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
 
 .toggle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
+  gap: 10px;
+  justify-content: flex-start;
 }
 
-.toggle input[type="checkbox"] {
-  cursor: pointer;
+/* list of requests */
+.card .card-body {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+ul { padding-left: 18px; }
+
+/* responsive adjustments */
+@media (max-width: 640px) {
+  .row { flex-direction: column; }
+  .page-card,
+  .container { margin: 12px; padding: 16px; }
+  .btn-container { justify-content: center; }
 }
 </style>
