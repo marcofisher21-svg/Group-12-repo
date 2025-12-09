@@ -7,7 +7,8 @@
             "department": "Development",
             "salary": 70000,
             "employmentHistory": "Joined in 2015, promoted to Senior in 2018",
-            "contact": "sibongile.nkosi@moderntech.com"
+            "contact": "sibongile.nkosi@moderntech.com",
+            "image": "Sibongile.jpg"
         },
         {
             "employeeId": 2,
@@ -16,25 +17,28 @@
             "department": "HR",
             "salary": 80000,
             "employmentHistory": "Joined in 2013, promoted to Manager in 2017",
-            "contact": "lungile.moyo@moderntech.com"
+            "contact": "lungile.moyo@moderntech.com",
+            "image": "Lungile.jpg"
         },
         {
-            "employeeId": 3,
+            "employeeId": 3, 
             "name": "Thabo Molefe",
             "position": "Quality Analyst",
             "department": "QA",
             "salary": 55000,
             "employmentHistory": "Joined in 2018",
-            "contact": "thabo.molefe@moderntech.com"
+            "contact": "thabo.molefe@moderntech.com",
+            "image": "Thabo.jpg"
         },
         {
-            "employeeId": 4,
+            "employeeId": 4, 
             "name": "Keshav Naidoo",
             "position": "Sales Representative",
             "department": "Sales",
             "salary": 60000,
             "employmentHistory": "Joined in 2020",
-            "contact": "keshav.naidoo@moderntech.com"
+            "contact": "keshav.naidoo@moderntech.com",
+            "image": "Keshav.jpg"
         },
         {
             "employeeId": 5,
@@ -43,7 +47,8 @@
             "department": "Marketing",
             "salary": 58000,
             "employmentHistory": "Joined in 2019",
-            "contact": "zanele.khumalo@moderntech.com"
+            "contact": "zanele.khumalo@moderntech.com",
+            "image": "Zanele.jpg"
         },
         {
             "employeeId": 6,
@@ -52,7 +57,8 @@
             "department": "Design",
             "salary": 65000,
             "employmentHistory": "Joined in 2016",
-            "contact": "sipho.zulu@moderntech.com"
+            "contact": "sipho.zulu@moderntech.com",
+            "image": "Sipho.jpg"
         },
         {
             "employeeId": 7,
@@ -61,7 +67,8 @@
             "department": "IT",
             "salary": 72000,
             "employmentHistory": "Joined in 2017",
-            "contact": "naledi.moeketsi@moderntech.com"
+            "contact": "naledi.moeketsi@moderntech.com",
+            "image": "Naledi.jpg"
         },
         {
             "employeeId": 8,
@@ -70,25 +77,28 @@
             "department": "Marketing",
             "salary": 56000,
             "employmentHistory": "Joined in 2021",
-            "contact": "farai.gumbo@moderntech.com"
+            "contact": "farai.gumbo@moderntech.com",
+            "image": "Farai.jpg"
         },
         {
-            "employeeId": 9,
+            "employeeId": 9, 
             "name": "Karabo Dlamini",
             "position": "Accountant",
             "department": "Finance",
             "salary": 62000,
             "employmentHistory": "Joined in 2018",
-            "contact": "karabo.dlamini@moderntech.com"
+            "contact": "karabo.dlamini@moderntech.com",
+            "image": "Karabo.jpg"
         },
         {
             "employeeId": 10,
-            "name": "Fatima Patel",
+            "name": "Fatima Patel", 
             "position": "Customer Support Lead",
             "department": "Support",
             "salary": 58000,
             "employmentHistory": "Joined in 2016",
-            "contact": "fatima.patel@moderntech.com"
+            "contact": "fatima.patel@moderntech.com",
+            "image": "Fatima.jpg"
         }
     ]
 }
