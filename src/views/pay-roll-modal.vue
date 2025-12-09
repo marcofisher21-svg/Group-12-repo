@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <NavBar />
     <div class="container py-4">
@@ -38,7 +38,7 @@
 import NavBar from "../components/NavBar.vue";
 import PayslipModal from "./pay-slip-modal.vue";
 
-import { employees, computePayslip } from "../data/payroll.js"; // ✅ FIXED
+import { employees, computePayslip } from "./pay-slip-modal.vue"; // ✅ FIXED
 import { ref } from "vue";
 
 const employeesList = employees;
@@ -51,4 +51,7 @@ function compute(e) {
 function openPayslip(e) {
   payslip.value = computePayslip(e, new Date().toISOString().slice(0, 7));
 }
-</script>
+</script> -->
+<template>
+  <div class="div"></div>
+</template>

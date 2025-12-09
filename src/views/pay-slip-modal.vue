@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="modal-backdrop show d-flex justify-content-center align-items-center" style="position:fixed; inset:0; z-index:2000;">
     <div class="card p-3" style="width:520px; max-width:95%;">
       <div class="d-flex justify-content-between">
@@ -40,4 +40,7 @@ function download() {
 
 <style scoped>
 .modal-backdrop { background: rgba(0,0,0,0.4); }
-</style>
+</style> -->
+<template>
+  <div class="div"></div>
+</template>

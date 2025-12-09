@@ -25,7 +25,7 @@ import  HRlogo from '../assets/hr logo.webp'
               <router-link to="/attendance" class="nav-link attendance" > Attendance</router-link>
           </li>
         <li class="nav-item">
-            <a class="nav-link attendance payroll" href="#">Payroll</a>
+            <router-link class="nav-link attendance payroll" href="#">Payroll</router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link attendance employee" href="#">Employees</a>

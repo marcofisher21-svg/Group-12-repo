@@ -20,11 +20,6 @@ const routes =  [
     path: '/payroll',
     name: 'payroll',
     component: PayRollModal
-  },
-  {
-    path: '/payslip',
-    name: 'payslip',
-    component: PaySlipModal
   }
   
   ]

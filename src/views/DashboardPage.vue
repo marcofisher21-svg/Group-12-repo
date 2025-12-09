@@ -7,11 +7,11 @@ const leaveRequesters = ref([]);
 
 onMounted(async () => {
   try {
-    const empRes = await fetch("/..employee_info.json");
+    const empRes = await fetch('/employee_info.json');
     const employeesData = await empRes.json();
     totalEmployees.value = employeesData.employeeInformation.length;
 
-    const leaveRes = await fetch("/..attendance.json");
+    const leaveRes = await fetch('/attendance.json');
     const leaveData = await leaveRes.json();
     totalLeaveRequests.value = leaveData.attendanceAndLeave.reduce(
       (acc, emp) => acc + emp.leaveRequests.length,
