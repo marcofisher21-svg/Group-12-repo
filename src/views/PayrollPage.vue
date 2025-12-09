@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <!-- Inline modal -->
+   
     <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -95,17 +95,17 @@ function computeAsync(employee) {
 
 onMounted(async () => {
   try {
-    // Load payroll data
+  
     const resPayroll = await fetch('/payroll_data.json');
     const payrollJson = await resPayroll.json();
     const payrollData = payrollJson.payrollData || [];
 
-    // Load employee info data
+   
     const resInfo = await fetch('/employee_info.json');
     const infoJson = await resInfo.json();
-    const employeeInfo = infoJson.employeeInformation || []; // <-- updated field name
+    const employeeInfo = infoJson.employeeInformation || []; 
 
-    // Merge info into payroll data
+    
     employeesList.value = payrollData.map(emp => {
       const info = employeeInfo.find(i => Number(i.employeeId) === Number(emp.employeeId));
       return {
@@ -115,7 +115,7 @@ onMounted(async () => {
       };
     });
 
-    // Compute payslips
+    
     for (const emp of employeesList.value) {
       computeResult.value[emp.employeeId] = await computeAsync(emp);
     }
