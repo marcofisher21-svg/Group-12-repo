@@ -26,64 +26,16 @@ onMounted(async () => {
         name: emp.name,
         requests: emp.leaveRequests,
       }));
+
+    const saved = localStorage.getItem('newLeaveRequests');
+    if (saved) {
+      newLeaveRequests.value = JSON.parse(saved);
+    }
   } catch (error) {
     console.error("Error fetching JSON:", error);
   }
 });
 
-const submitForm = () => {
-  const fullName = document.getElementById("fullName").value.trim();
-  const entitlement = document.getElementById("entitlement").value;
-  const startDate = document.getElementById("start_date").value;
-  const endDate = document.getElementById("end_date").value;
-  const session = document.getElementById("session").value;
-  const reason = document.getElementById("reason").value.trim();
-
-  if (!fullName || !entitlement || !startDate || !endDate || !reason) {
-    alert("Please fill in all required fields (Full Name, Entitlement, From, To, Reason)");
-    return;
-  }
-  if (new Date(endDate) < new Date(startDate)) {
-    alert("End date cannot be before start date");
-    return;
-  }
-
-  
-  const existingEmp = newLeaveRequests.value.find(emp => emp.name === fullName);
-  
-  const newRequest = {
-    date: startDate === endDate ? startDate : `${startDate} to ${endDate}`,
-    reason,
-    status: "Pending",
-    entitlement,
-    session,
-  };
-
-  if (existingEmp) {
-    
-    existingEmp.requests.push(newRequest);
-  } else {
-    
-    newLeaveRequests.value.push({
-      name: fullName,
-      requests: [newRequest],
-    });
-  }
-
-
-  totalLeaveRequests.value = combinedLeaveRequesters.value.reduce(
-    (acc, emp) => acc + emp.requests.length,
-    0
-  );
-
-
-  document.getElementById("fullName").value = "";
-  document.getElementById("entitlement").value = "";
-  document.getElementById("start_date").value = "";
-  document.getElementById("end_date").value = "";
-  document.getElementById("session").value = "Full Day";
-  document.getElementById("reason").value = "";
-}
 
 </script>
 
@@ -98,66 +50,6 @@ const submitForm = () => {
         <div class="col">Total Requests: {{ totalLeaveRequests }}</div>
       </div>
     </div>
-</div>
-
-
-<div class="container">
-  <div class="heading">Leave Application</div>
-  <form class="form" action="">
-    <div class="input-field">
-      <label for="fullName">Full Name <span class="required">*</span></label>
-      <input type="text" id="fullName" placeholder="Enter your full name" required>
-    </div>
-
-    <div class="input-field">
-      <label for="entitlement">Entitlement <span class="required">*</span></label>
-      <select id="entitlement" required>
-        <option>Select an option</option>
-        <option>Annual Leave</option>
-        <option>Sick Leave</option>
-        <option>Family Responsibility/Childcare</option>
-      </select>
-    </div>
-
- 
-    <div class="row">
-      <div class="input-field">
-        <label for="start_date">From </label>
-        <input type="date" id="start_date" name="start_date" required>
-      </div>
-      <div class="input-field">
-        <label for="end_date">To <span class="required">*</span></label>
-        <input type="date" id="end_date" name="end_date" required>
-      </div>
-    </div>
-
-    <div class="input-field">
-      <label for="session">Session</label>
-      <select id="session">
-        <option>Full Day</option>
-        <option>Half Day (AM)</option>
-        <option>Half Day (PM)</option>
-      </select>
-    </div>
-
-
-    <div class="input-field">
-      <label for="attachment">Attachment</label>
-      <input type="file" id="attachment">
-    </div>
-
-
-    <div class="input-field">
-      <label for="reason">Reason <span class="required">*</span> </label>
-      <textarea id="reason" maxlength="200" required></textarea>
-    </div>
-
-
-
-    <div class="btn-container">
-      <button class="btn" @click="submitForm">Submit</button>
-    </div>
-  </form>
 </div>
 
 
