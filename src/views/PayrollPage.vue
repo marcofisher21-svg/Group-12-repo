@@ -38,6 +38,40 @@
       </div>
     </div>
 
+
+<!-- Inline modal -->
+<div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content" id="print-area">
+      <div class="modal-header">
+        <h5 class="modal-title">Payslip - {{ selectedEmployee.name }}</h5>
+        <button type="button" class="btn-close" @click="selectedEmployee = null"></button>
+      </div>
+
+      <div class="modal-body">
+        <p><strong>Department:</strong> {{ selectedEmployee.department }}</p>
+        <p><strong>Hours Worked:</strong> {{ selectedEmployee.hoursWorked }}</p>
+        <p><strong>Leave Days:</strong> {{ selectedEmployee.leaveDeductions }}</p>
+
+        <hr />
+
+        <p><strong>Gross Salary:</strong> {{ formatCurrency(selectedEmployee.finalSalary) }}</p>
+        <p><strong>Tax (10%):</strong> {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.tax) }}</p>
+        <p><strong>Deductions:</strong> {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.deduction) }}</p>
+
+        <hr />
+
+        <p><strong>Net Salary:</strong> 
+          <span style="font-size: 1.2rem; font-weight: bold;">
+            {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.net) }}
+          </span>
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" @click="printPayslip">Print PDF</button>
+        <button class="btn btn-secondary" @click="selectedEmployee = null">Close</button>
+
    
     <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
       <div class="modal-dialog">
@@ -59,9 +93,12 @@
             <button class="btn btn-secondary" @click="selectedEmployee = null">Close</button>
           </div>
         </div>
+
       </div>
-      <div class="modal-backdrop fade show" @click="selectedEmployee = null"></div>
     </div>
+  </div>
+  <div class="modal-backdrop fade show" @click="selectedEmployee = null"></div>
+</div>
   </div>
 </template>
 
@@ -75,6 +112,10 @@ const selectedEmployee = ref(null);
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(amount || 0);
+}
+
+function printPayslip() {
+  window.print();
 }
 
 function computePayslip(employee) {
