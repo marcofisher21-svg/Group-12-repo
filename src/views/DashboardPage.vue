@@ -8,7 +8,7 @@ const leaveRequesters = ref([]);
 
 const allCalendars = ref([]);
 
-const currentDate = new Date();
+const currentDate = new Date(); 
 
 function isToday(day) {
   const today = new Date();
