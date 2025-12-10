@@ -4,7 +4,7 @@ import  HRlogo from '../assets/hr logo.webp'
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary ">
   <div class="container-fluid">
 
     <router-link to="/dashboard">
@@ -34,11 +34,13 @@ import  HRlogo from '../assets/hr logo.webp'
           <router-link to="/leave" class="nav-link leave" href="nav-link leave">Leave</router-link>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+     
     </div>
   </div>
 </nav>
 </template>
+<style scoped>
+li{
+  margin:0% 10% 0;
+}
+</style>
