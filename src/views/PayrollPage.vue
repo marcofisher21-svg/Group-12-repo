@@ -38,6 +38,7 @@
       </div>
     </div>
 
+
 <!-- Inline modal -->
 <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
   <div class="modal-dialog">
@@ -70,6 +71,29 @@
       <div class="modal-footer">
         <button class="btn btn-primary" @click="printPayslip">Print PDF</button>
         <button class="btn btn-secondary" @click="selectedEmployee = null">Close</button>
+
+   
+    <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Payslip - {{ selectedEmployee.name }}</h5>
+            <button type="button" class="btn-close" @click="selectedEmployee = null"></button>
+          </div>
+
+          <div class="modal-body">
+            <p><strong>Department:</strong> {{ selectedEmployee.department }}</p>
+            <p><strong>Base:</strong> {{ formatCurrency(selectedEmployee.finalSalary) }}</p>
+            <p><strong>Tax:</strong> {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.tax) }}</p>
+            <p><strong>Deduction:</strong> {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.deduction) }}</p>
+            <p><strong>Net:</strong> {{ formatCurrency(computeResult[selectedEmployee.employeeId]?.net) }}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="selectedEmployee = null">Close</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -112,17 +136,17 @@ function computeAsync(employee) {
 
 onMounted(async () => {
   try {
-    // Load payroll data
+  
     const resPayroll = await fetch('/payroll_data.json');
     const payrollJson = await resPayroll.json();
     const payrollData = payrollJson.payrollData || [];
 
-    // Load employee info data
+   
     const resInfo = await fetch('/employee_info.json');
     const infoJson = await resInfo.json();
-    const employeeInfo = infoJson.employeeInformation || []; // <-- updated field name
+    const employeeInfo = infoJson.employeeInformation || []; 
 
-    // Merge info into payroll data
+    
     employeesList.value = payrollData.map(emp => {
       const info = employeeInfo.find(i => Number(i.employeeId) === Number(emp.employeeId));
       return {
@@ -132,7 +156,7 @@ onMounted(async () => {
       };
     });
 
-    // Compute payslips
+    
     for (const emp of employeesList.value) {
       computeResult.value[emp.employeeId] = await computeAsync(emp);
     }
@@ -154,5 +178,8 @@ onMounted(async () => {
 .modal-dialog {
   z-index: 1050;
   margin-top: 10vh;
+}
+@media screen and (max-width: 600px) {
+  
 }
 </style>

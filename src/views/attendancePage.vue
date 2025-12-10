@@ -1,12 +1,40 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import NavBar from "@/components/NavBar.vue";
 
 const people = ref([]);
 const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
-const leaveRequesters = ref([]);
+const showAvailableOnly = ref(false);
+const filterStatus = ref('all');
+const leaveRequesters = ref([]); 
+
+const filteredAttendance = computed(() => {
+  if (filterStatus.value === 'all') {
+    return people.value;
+  }
+  
+  if (filterStatus.value === 'present') {
+    return people.value.map(emp => ({
+      ...emp,
+      attendance: emp.attendance ? emp.attendance.filter(rec => 
+        String(rec.status).toLowerCase() === 'present'
+      ) : []
+    })).filter(emp => emp.attendance.length > 0);
+  }
+
+  if (filterStatus.value === 'absent') {
+    return people.value.map(emp => ({
+      ...emp,
+      attendance: emp.attendance ? emp.attendance.filter(rec => 
+        String(rec.status).toLowerCase() === 'absent'
+      ) : []
+    })).filter(emp => emp.attendance.length > 0);
+  }
+
+  return people.value;
+});
 
 
 onMounted(async () => {
@@ -16,7 +44,6 @@ onMounted(async () => {
 
     const list = data.attendanceAndLeave || [];
     people.value = list;
-
 
     totalEmployees.value = list.length;
     totalLeaveRequests.value = list.reduce((sum, p) => sum + (p.leaveRequests?.length || 0), 0);
@@ -53,9 +80,23 @@ const statusClass = (s) => {
       <div class="row">
         <div class="col">Employees: {{ totalEmployees }}</div>
         <div class="col">Attendance Recordings: {{ totalAttendanceRecordings }}</div>
-        <div class="col">Leave requests: {{ totalLeaveRequests }}</div>
       </div>
     </div>
+    <div>
+    <div class="filters">
+       <button @click="filterStatus = 'absent'" :class="{ active: filterStatus === 'absent' }">
+        Absent
+      </button>
+     <button @click="filterStatus = 'present'" :class="{ active: filterStatus === 'present' }">
+        Present
+      </button>
+      <button @click="filterStatus = 'all'" :class="{ active: filterStatus === 'all' }">
+        All
+      </button>
+     
+    </div>
+
+  </div>
 
     <div class="card mt-3">
       <div class="card-body">
@@ -64,7 +105,7 @@ const statusClass = (s) => {
         <div v-if="people.length === 0" class="text-center">No attendance data found.</div>
 
         <div v-else>
-          <div v-for="emp in people" :key="emp.employeeId" class="mb-4">
+          <div v-for="emp in filteredAttendance" :key="emp.employeeId" class="mb-4">
             <h6 style="background:#f7f9fb;padding:10px;border-radius:6px;margin:0">
               <strong>{{ emp.name }}</strong> <small class="text-muted">(#{{ emp.employeeId }})</small>
             </h6>
@@ -98,21 +139,6 @@ const statusClass = (s) => {
       </div>
     </div>
 
-   <div class="card" style="">
-    <div class="card-body">
-      <h5 class="card-title">Time-off requests:</h5>
-      <ul>
-        <li v-for="emp in leaveRequesters" :key="emp.name">
-          <strong>{{ emp.name }}</strong>
-          <ul>
-            <li v-for="req in emp.requests" :key="req.date">
-              {{ req.date }} - {{ req.reason }} ({{ req.status }})
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
 
   </div>
 </template>
@@ -161,4 +187,40 @@ h1 {
   background-color: #eef2f5 !important;
   color: #333 !important;
 }
+
+.filters {
+  margin-top: 15px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filters button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: white;
+  color: #34495e;
+  transition: 0.25s ease;
+}
+
+.filters button.active {
+  background: #1b263b;
+  color: white;
+}
+
+.filters button:hover {
+  transform: translateY(-2px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 </style>

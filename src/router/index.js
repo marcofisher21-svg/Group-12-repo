@@ -4,7 +4,8 @@ import loginPage from '../views/loginPage.vue'
 import AttendancePage from '../views/attendancePage.vue'
 import PayrollPage from '../views/PayrollPage.vue'
 import EmployeePage from '../views/employeePage.vue'
-
+import LeavePage from '../views/leavePage.vue'
+import ApplicationPage from '../views/ApplicationPage.vue'
 
 const routes =  [
     {
@@ -33,7 +34,19 @@ const routes =  [
     name: 'employee',
     component: EmployeePage
     
-  }
+  },
+  {
+    path: '/leave',
+    name: 'leave',
+    component: LeavePage
+    
+  },
+   {
+    path: '/application',
+    name: 'application',
+    component: ApplicationPage
+    
+  },
   
   ]
 

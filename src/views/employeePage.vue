@@ -24,6 +24,7 @@ onMounted(async () => {
 </script>
 <template>
   <NavBar />
+  
   <div class="container">
     <h5 class="page-title">Employee Information</h5>
     <div class="employees-row">
@@ -33,7 +34,7 @@ onMounted(async () => {
           <p class="name"><strong>{{ employee.name }}</strong></p>
           <p class="position"><strong>Position:</strong> {{ employee.position }}</p>
           <p class="department"><strong>Department:</strong> {{ employee.department }}</p>
-          <p class="salary"><strong>Salary:</strong> R{{ employee.salary }}</p>
+          <p class="salary"><strong>Salary:</strong> R {{ employee.salary }}</p>
           <p class="employmentHistory"><strong>History:</strong> {{ employee.employmentHistory }}</p>
           <p class="contact"><strong>Contact:</strong> {{ employee.contact }}</p>
         </div>
