@@ -3,34 +3,87 @@ import { ref, onMounted, computed } from "vue";
 import NavBar from "@/components/NavBar.vue";
 
 const newLeaveRequests = ref([]);
+const newAttendance = ref([]);
 const totalLeaveRequests = ref(0);
+const totalAttendanceRecordings = ref(0);
+
 const combinedLeaveRequesters = computed(() => newLeaveRequests.value);
+const combinedAttendance = computed(() => newAttendance.value);
 
 onMounted(() => {
-  const saved = localStorage.getItem('newLeaveRequests');
-  if (saved) {
-    newLeaveRequests.value = JSON.parse(saved);
+  const savedLeave = localStorage.getItem('newLeaveRequests');
+  if (savedLeave) {
+    newLeaveRequests.value = JSON.parse(savedLeave);
+  }
+  
+  const savedAttendance = localStorage.getItem('newAttendance');
+  if (savedAttendance) {
+    newAttendance.value = JSON.parse(savedAttendance);
   }
 });
 
-const submitForm = () => {
-  const fullName = document.getElementById("fullName").value.trim();
-  const entitlement = document.getElementById("entitlement").value;
-  const startDate = document.getElementById("start_date").value;
-  const endDate = document.getElementById("end_date").value;
-  const session = document.getElementById("session").value;
-  const reason = document.getElementById("reason").value.trim();
+const submitAttendanceForm = (e) => {
+  e.preventDefault();
+  
+  const fullName = document.getElementById("attendanceFullName").value.trim();
+  const status = document.getElementById("attendanceStatus").value;
+  const date = document.getElementById("attendanceDate").value;
 
-  if (!fullName || !entitlement || !startDate || !endDate || !reason) {
+  if (!fullName || status === "Select an option" || !date) {
+    alert("Please fill in all required fields");
+    return;
+  }
+
+  const existingEmp = newAttendance.value.find(emp => emp.name === fullName);
+  
+  const newRecord = {
+    date,
+    status,
+  };
+
+  if (existingEmp) {
+    existingEmp.attendance.push(newRecord);
+  } else {
+    newAttendance.value.push({
+      name: fullName,
+      attendance: [newRecord],
+    });
+  }
+
+  localStorage.setItem('newAttendance', JSON.stringify(newAttendance.value));
+
+  totalAttendanceRecordings.value = combinedAttendance.value.reduce(
+    (acc, emp) => acc + emp.attendance.length,
+    0
+  );
+
+  alert("Attendance recorded successfully!");
+
+  document.getElementById("attendanceFullName").value = "";
+  document.getElementById("attendanceStatus").value = "Select an option";
+  document.getElementById("attendanceDate").value = "";
+};
+
+const submitLeaveForm = (e) => {
+  e.preventDefault();
+  
+  const fullName = document.getElementById("leaveFullName").value.trim();
+  const entitlement = document.getElementById("leaveEntitlement").value;
+  const startDate = document.getElementById("leave_start_date").value;
+  const endDate = document.getElementById("leave_end_date").value;
+  const session = document.getElementById("leaveSession").value;
+  const reason = document.getElementById("leaveReason").value.trim();
+
+  if (!fullName || entitlement === "Select an option" || !startDate || !endDate || !reason) {
     alert("Please fill in all required fields (Full Name, Entitlement, From, To, Reason)");
     return;
   }
+  
   if (new Date(endDate) < new Date(startDate)) {
     alert("End date cannot be before start date");
     return;
   }
 
-  
   const existingEmp = newLeaveRequests.value.find(emp => emp.name === fullName);
   
   const newRequest = {
@@ -42,10 +95,8 @@ const submitForm = () => {
   };
 
   if (existingEmp) {
-    
     existingEmp.requests.push(newRequest);
   } else {
-    
     newLeaveRequests.value.push({
       name: fullName,
       requests: [newRequest],
@@ -59,100 +110,59 @@ const submitForm = () => {
     0
   );
 
+  alert("Leave request submitted successfully!");
 
-  document.getElementById("fullName").value = "";
-  document.getElementById("entitlement").value = "";
-  document.getElementById("start_date").value = "";
-  document.getElementById("end_date").value = "";
-  document.getElementById("session").value = "Full Day";
-  document.getElementById("reason").value = "";
-}
-
- const newAttendance = {
-    date: document.getElementById("date").value,
-    status,
-
-  };
-
-  if (existingEmp) {
-    
-    existingEmp.requests.push(newRequest);
-  } else {
-    
-    newLeaveRequests.value.push({
-      name: fullName,
-      attendance: [newAttendancet],
-    });
-  }
-
-  localStorage.setItem('newAttendance', JSON.stringify(newAttendance.value));
-
-  totalAttendanceRecordings.value = combinedAttendance.value.reduce(
-    (acc, emp) => acc + emp.requests.length,
-    0
-  );
-
-
-  document.getElementById("fullName").value = "";
-  document.getElementById("status").value = "";
-  document.getElementById("date").value = "";
- 
- 
-  
-
+  document.getElementById("leaveFullName").value = "";
+  document.getElementById("leaveEntitlement").value = "Select an option";
+  document.getElementById("leave_start_date").value = "";
+  document.getElementById("leave_end_date").value = "";
+  document.getElementById("leaveSession").value = "Full Day";
+  document.getElementById("leaveReason").value = "";
+};
 </script>
 
 <template>
 <NavBar />
 
-
-
 <div class="container">
   <div class="heading">Attendance Application</div>
-  <form class="form" action="">
+  <form class="form" @submit="submitAttendanceForm">
     <div class="input-field">
-      <label for="fullName">Full Name <span class="required">*</span></label>
-      <input type="text" id="fullName" placeholder="Enter your full name" required>
+      <label for="attendanceFullName">Full Name <span class="required">*</span></label>
+      <input type="text" id="attendanceFullName" placeholder="Enter your full name" required>
     </div>
 
     <div class="input-field">
-      <label for="status">Status <span class="required">*</span></label>
-      <select id="status" required>
+      <label for="attendanceStatus">Status <span class="required">*</span></label>
+      <select id="attendanceStatus" required>
         <option>Select an option</option>
         <option>Present</option>
         <option>Absent</option>
-
       </select>
     </div>
 
-
-      <div class="input-field">
-        <label for="date">Date </label>
-        <input type="date" id="date" name="date" required>
-      </div>
+    <div class="input-field">
+      <label for="attendanceDate">Date <span class="required">*</span></label>
+      <input type="date" id="attendanceDate" name="date" required>
+    </div>
 
     <div class="btn-container">
-      <button class="btn" @click="submitForm">Submit</button>
+      <button type="submit" class="btn">Submit</button>
     </div>
   </form>
 </div>
 
-
-
-
-
-
 <div class="container">
   <div class="heading">Leave Application</div>
-  <form class="form" action="">
+  <form class="form" @submit="submitLeaveForm">
     <div class="input-field">
-      <label for="fullName">Full Name <span class="required">*</span></label>
-      <input type="text" id="fullName" placeholder="Enter your full name" required>
+      <label for="leaveFullName">Full Name <span class="required">*</span></label>
+      <input type="text" id="leaveFullName" placeholder="Enter your full name" required>
     </div>
 
     <div class="input-field">
-      <label for="entitlement">Entitlement <span class="required">*</span></label>
-      <select id="entitlement" required>
+      <label for="leaveEntitlement">Entitlement <span class="required">*</span></label>
+      <select id="leaveEntitlement" required>
         <option>Select an option</option>
         <option>Annual Leave</option>
         <option>Sick Leave</option>
@@ -160,47 +170,41 @@ const submitForm = () => {
       </select>
     </div>
 
- 
     <div class="row">
       <div class="input-field">
-        <label for="start_date">From </label>
-        <input type="date" id="start_date" name="start_date" required>
+        <label for="leave_start_date">From <span class="required">*</span></label>
+        <input type="date" id="leave_start_date" name="start_date" required>
       </div>
       <div class="input-field">
-        <label for="end_date">To <span class="required">*</span></label>
-        <input type="date" id="end_date" name="end_date" required>
+        <label for="leave_end_date">To <span class="required">*</span></label>
+        <input type="date" id="leave_end_date" name="end_date" required>
       </div>
     </div>
 
     <div class="input-field">
-      <label for="session">Session</label>
-      <select id="session">
+      <label for="leaveSession">Session</label>
+      <select id="leaveSession">
         <option>Full Day</option>
         <option>Half Day (AM)</option>
         <option>Half Day (PM)</option>
       </select>
     </div>
 
-
     <div class="input-field">
-      <label for="attachment">Attachment</label>
-      <input type="file" id="attachment">
+      <label for="leaveAttachment">Attachment</label>
+      <input type="file" id="leaveAttachment">
     </div>
 
-
     <div class="input-field">
-      <label for="reason">Reason <span class="required">*</span> </label>
-      <textarea id="reason" maxlength="200" required></textarea>
+      <label for="leaveReason">Reason <span class="required">*</span></label>
+      <textarea id="leaveReason" maxlength="200" required></textarea>
     </div>
-
-
 
     <div class="btn-container">
-      <button class="btn" @click="submitForm">Submit</button>
+      <button type="submit" class="btn">Submit</button>
     </div>
   </form>
 </div>
-
 </template>
 
 
