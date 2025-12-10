@@ -138,4 +138,7 @@ onMounted(async () => {
   z-index: 1050;
   margin-top: 10vh;
 }
+@media screen and (max-width: 600px) {
+  
+}
 </style>

@@ -202,4 +202,16 @@ onMounted(async () => {
 .containerBox{
   margin-top: 5%;
 }
+@media screen and (max-width: 768px) {
+  .containerBox {
+   flex-direction: column;
+  }
+  #calendarWrapper {
+    width: 100% !important;
+    margin:0;
+  }
+  .calendar-grid{
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 </style>
