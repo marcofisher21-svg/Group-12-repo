@@ -3,6 +3,11 @@
 import { ref, onMounted } from 'vue'
 import NavBar from "@/components/NavBar.vue";
 
+// ADD THIS FUNCTION HERE
+const getImage = (fileName) => {
+  return new URL(`../assets/employees/${fileName}`, import.meta.url).href
+}
+
 const employees = ref([])
 
 onMounted(async () => {
@@ -24,7 +29,7 @@ onMounted(async () => {
     <h5 class="page-title">Employee Information</h5>
     <div class="employees-row">
       <div v-for="employee in employees" :key="employee.employeeId" class="employee-card">
-        <img src="https://imgs.search.brave.com/c-iHTuBHs88C0IRkAJNGjCGzMDQyPl45bVol3d3ngDg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzBmLzEz/LzE5LzBmMTMxOTc5/NzkyYmNhMzdjMzQz/N2NjN2QxOGYzYzMy/LmpwZw" class="card-img-top" alt="employee photo">
+       <img :src="getImage(employee.image)" class="card-img-top" alt="employee photo">
         <div class="card-body">
           <p class="name"><strong>{{ employee.name }}</strong></p>
           <p class="position"><strong>Position:</strong> {{ employee.position }}</p>
@@ -74,9 +79,9 @@ onMounted(async () => {
 }
 
 .card-img-top {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: 220px;           /* Good portrait height */
+  object-fit: cover;       /* No stretching */
+  object-position: top;    /* Keep the face visible */
 }
 
 .card-body {
