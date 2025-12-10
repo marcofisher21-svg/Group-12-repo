@@ -3,8 +3,8 @@
 
   <div class="container py-4">
     <h3>Payroll</h3>
-
-    <div class="row mt-3">
+<div id="innerCard" class="tableDiv">
+  <div class="row mt-3">
       <div class="col-md-12">
         <table class="table table-striped">
           <thead>
@@ -39,7 +39,7 @@
     </div>
 
    
-    <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
+    <div id="innerCard"  v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -62,6 +62,8 @@
       </div>
       <div class="modal-backdrop fade show" @click="selectedEmployee = null"></div>
     </div>
+</div>
+    
   </div>
 </template>
 
@@ -139,6 +141,46 @@ onMounted(async () => {
   margin-top: 10vh;
 }
 @media screen and (max-width: 600px) {
-  
+  .container {
+    padding: 0%;
+    margin: 0%;
+  }
+ #innerCard {
+    width: 50%;
+    
+  }
+  /* Hide less important columns on small screens to avoid wrapping */
+  .table th:nth-child(4), .table td:nth-child(4), /* Tax */
+  .table th:nth-child(5), .table td:nth-child(5)  /* Deduction */ {
+    display: none;
+  }
+
+  .table {
+    table-layout: fixed;
+    font-size: 13px;
+  }
+
+  .table th, .table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.4rem 0.35rem;
+  }
+
+  /* Allow the last action column to remain compact */
+  .table td:last-child {
+    width: 72px;
+  }
+
+  /* Ensure table container doesn't force page horizontal scroll */
+  .tableDiv {
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .innerCard { padding: 8px 6px; }
+  .table { font-size: 13px; }
+  th, td { padding: 0.4rem 0.25rem; }
 }
 </style>

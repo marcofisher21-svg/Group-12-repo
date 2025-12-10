@@ -6,7 +6,6 @@ const people = ref([]);
 const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
-const showAvailableOnly = ref(false);
 const filterStatus = ref('all');
 const leaveRequesters = ref([]); 
 
@@ -72,7 +71,7 @@ const statusClass = (s) => {
 </script>
 <template>
   <NavBar />
-  <div class="card-body">
+  <div id="outerCard" class="card-body">
 
     <h5 class="card-title">Attendance Overview</h5>
 
@@ -99,7 +98,7 @@ const statusClass = (s) => {
   </div>
 
     <div class="card mt-3">
-      <div class="card-body">
+      <div id="attendanceCard" class="card-body">
         <h5 class="card-title">Attendance Records</h5>
 
         <div v-if="people.length === 0" class="text-center">No attendance data found.</div>
@@ -145,14 +144,19 @@ const statusClass = (s) => {
 <style scoped>
 
 
-.card-body {
+#outerCard {
   background-color: aliceblue;
- width: 750px;
+ width: 800px;
+ padding:15px;
   align-items: center;
   justify-content: center;
   margin: 5% auto;
   box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
+}
+
+#attendanceCard {
+  margin:5px;
 }
 h1 {
   text-align: center;
@@ -216,11 +220,13 @@ h1 {
   transform: translateY(-2px);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
+@media screen and (max-width: 768px) {
+  #outerCard {
+    width: 90%;
+    margin: 10% auto;
+  }
+  
+}
 
 </style>
