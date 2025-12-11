@@ -6,9 +6,9 @@ const totalEmployees = ref(0);
 const totalLeaveRequests = ref(0);
 const leaveRequesters = ref([]);
 
-const allCalendars = ref([]);
+const performanceList = ref([]);
 
-const currentDate = new Date(); 
+const allCalendars = ref([]);
 
 function isToday(day) {
   const today = new Date();
@@ -94,6 +94,29 @@ onMounted(async () => {
         requests: emp.leaveRequests
       }));
 
+    // Build performance list: attendance rate and leave count per employee
+    const perf = leaveData.attendanceAndLeave.map(emp => {
+      const total = (emp.attendance || []).length || 0;
+      const present = (emp.attendance || []).filter(r => String(r.status).toLowerCase() === 'present').length;
+      const attendanceRate = total > 0 ? Math.round((present / total) * 100) : 0;
+      const leaveCount = (emp.leaveRequests || []).length;
+      return {
+        employeeId: emp.employeeId,
+        name: emp.name,
+        attendanceRate,
+        leaveCount
+      };
+    });
+
+    // Join with employee info to ensure names/positions are accurate
+    performanceList.value = perf.map(p => {
+      const info = employeesData.employeeInformation.find(e => Number(e.employeeId) === Number(p.employeeId));
+      return {
+        ...p,
+        position: info?.position || '',
+      };
+    }).sort((a,b) => b.attendanceRate - a.attendanceRate);
+
     
     generateAllCalendars();
 
@@ -121,7 +144,25 @@ onMounted(async () => {
         <div class="card-body">
           <h5 class="card-title">Leave requests</h5>
           <p class="card-text">Requests: {{ totalLeaveRequests }}</p>
-          <a href="#" class="btn btn-primary">Go</a>
+          <RouterLink to="/leave" class="btn btn-primary">Go</RouterLink>
+        </div>
+      </div>
+
+      <div class="card mb-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Performance Overview</h5>
+          <p class="card-text">Top attendance</p>
+          <ul class="perf-list list-unstyled mb-0">
+            <li v-for="p in performanceList.slice(0,5)" :key="p.employeeId" class="perf-item">
+              <div class="perf-row">
+                <div class="perf-name">{{ p.name }}</div>
+                <div class="perf-rate">{{ p.attendanceRate }}%</div>
+              </div>
+              <div class="perf-bar">
+                <div class="perf-fill" :style="{ width: p.attendanceRate + '%' }"></div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -202,16 +243,61 @@ onMounted(async () => {
 .containerBox{
   margin-top: 5%;
 }
+.containerBox{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-left: 12px;
+  padding-right: 12px;
+  max-width: 1200px;
+  margin: 5% auto;
+}
+
+/* Side boxes layout */
+.sideBoxes{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 @media screen and (max-width: 768px) {
   .containerBox {
    flex-direction: column;
+   gap: 1rem;
+   padding-left: 10px;
+   padding-right: 10px;
   }
   #calendarWrapper {
     width: 100% !important;
     margin:0;
   }
   .calendar-grid{
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
+  .perf-name { max-width: 140px; }
+}
+
+@media screen and (max-width: 480px) {
+  .calendar-grid{ grid-template-columns: repeat(2, 1fr); }
+  .calendar-grid li { min-height: 56px; font-size: 0.65rem; padding: 6px; }
+  .calendar-grid time { font-size: 0.9rem; }
+  .perf-name { font-size: 0.85rem; max-width: 120px; }
+  .perf-rate { font-size: 0.8rem; }
+  .perf-bar { height:6px; }
+  .perf-fill { height:100%; }
+  .sideBoxes .card { width: 100% !important; }
+  .containerBox { margin-top: 6%; }
+}
+.perf-list .perf-item { margin-bottom: 10px; }
+.perf-row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.perf-name { font-size: 0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.perf-rate { font-weight:700; font-size:0.85rem; }
+.perf-bar { background:#e9ecef; height:8px; border-radius:6px; overflow:hidden; margin-top:6px; }
+.perf-fill { background: linear-gradient(90deg,#4caf50,#2e7d32); height:100%; }
+
+@media screen and (max-width: 768px) {
+  /* make side cards stack and shrink on small screens */
+  .sideBoxes .card { width: 100% !important; }
 }
 </style>
