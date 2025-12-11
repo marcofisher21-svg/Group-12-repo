@@ -40,7 +40,6 @@
       </div>
     </div>
 
-    <!-- Modal (inline) -->
     <div v-if="selectedEmployee" class="modal fade show d-block" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content" id="print-area">
@@ -167,9 +166,9 @@ onMounted(async () => {
     width: 50%;
     
   }
-  /* Hide less important columns on small screens to avoid wrapping */
-  .table th:nth-child(4), .table td:nth-child(4), /* Tax */
-  .table th:nth-child(5), .table td:nth-child(5)  /* Deduction */ {
+  
+  .table th:nth-child(4), .table td:nth-child(4),
+  .table th:nth-child(5), .table td:nth-child(5)   {
     display: none;
   }
 
@@ -185,12 +184,12 @@ onMounted(async () => {
     padding: 0.4rem 0.35rem;
   }
 
-  /* Allow the last action column to remain compact */
+
   .table td:last-child {
     width: 72px;
   }
 
-  /* Ensure table container doesn't force page horizontal scroll */
+
   .tableDiv {
     overflow-x: auto;
   }

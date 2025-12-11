@@ -94,7 +94,7 @@ onMounted(async () => {
         requests: emp.leaveRequests
       }));
 
-    // Build performance list: attendance rate and leave count per employee
+ 
     const perf = leaveData.attendanceAndLeave.map(emp => {
       const total = (emp.attendance || []).length || 0;
       const present = (emp.attendance || []).filter(r => String(r.status).toLowerCase() === 'present').length;
@@ -108,7 +108,7 @@ onMounted(async () => {
       };
     });
 
-    // Join with employee info to ensure names/positions are accurate
+    
     performanceList.value = perf.map(p => {
       const info = employeesData.employeeInformation.find(e => Number(e.employeeId) === Number(p.employeeId));
       return {
@@ -254,7 +254,7 @@ onMounted(async () => {
   margin: 5% auto;
 }
 
-/* Side boxes layout */
+
 .sideBoxes{
   display: flex;
   flex-direction: column;
@@ -297,7 +297,6 @@ onMounted(async () => {
 .perf-fill { background: linear-gradient(90deg,#4caf50,#2e7d32); height:100%; }
 
 @media screen and (max-width: 768px) {
-  /* make side cards stack and shrink on small screens */
   .sideBoxes .card { width: 100% !important; }
 }
 </style>

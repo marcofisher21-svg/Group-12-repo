@@ -3,7 +3,7 @@
 import { ref, onMounted } from 'vue'
 import NavBar from "@/components/NavBar.vue";
 
-// ADD THIS FUNCTION HERE
+
 const getImage = (fileName) => {
   return new URL(`../assets/employees/${fileName}`, import.meta.url).href
 }
@@ -79,9 +79,9 @@ onMounted(async () => {
 }
 
 .card-img-top {
-  height: 220px;           /* Good portrait height */
-  object-fit: cover;       /* No stretching */
-  object-position: top;    /* Keep the face visible */
+  height: 220px;           
+  object-fit: cover;     
+  object-position: top;    
 }
 
 .card-body {
