@@ -5,11 +5,11 @@ This is group 12's HR project
 
 Open your terminal and run:
 
-git clone 
+git clone (https://github.com/marcofisher21-svg/Group-12-repo.git)
 
 Then enter the project folder:
 
-cd Group-12-REPO
+cd Group-12-repo
 
 2. Install Dependencies
 
