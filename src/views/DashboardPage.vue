@@ -144,7 +144,7 @@ onMounted(async () => {
         <div class="card-body">
           <h5 class="card-title">Leave requests</h5>
           <p class="card-text">Requests: {{ totalLeaveRequests }}</p>
-          <a href="#" class="btn btn-primary">Go</a>
+          <RouterLink to="/leave" class="btn btn-primary">Go</RouterLink>
         </div>
       </div>
 
