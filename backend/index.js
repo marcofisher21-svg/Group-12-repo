@@ -1,5 +1,6 @@
 // index.js
 import express from 'express';
+import cors from 'cors'; 
 import {
   getEmployees,
   postEmployee,
@@ -8,6 +9,7 @@ import {
 } from './controllers/employeeController.js';
 
 const app = express();
+app.use(cors()); 
 app.use(express.json());
 
 app.get('/employee', getEmployees);
