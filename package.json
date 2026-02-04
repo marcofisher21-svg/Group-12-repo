@@ -35,5 +35,18 @@
     "oxlint": "~1.29.0",
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.5"
-  }
+  },
+  "description": "This is group 12's HR project",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcofisher21-svg/Group-12-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcofisher21-svg/Group-12-repo/issues"
+  },
+  "homepage": "https://github.com/marcofisher21-svg/Group-12-repo#readme"
 }
