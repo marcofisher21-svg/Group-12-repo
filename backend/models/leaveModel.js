@@ -28,5 +28,4 @@ export const patchLeave_db=async(leaveRequest_ID,leaveDate,reason,leaveStatus,em
 
 /* DELETE */
 export const deleteLeave_db=async(leaveRequest_ID)=>{
-  await pool.query('DELETE FROM `leaverequests` WHERE (`leaveRequests_ID` = ?);',[leaveRequest_ID]);
-};
+  await pool.query('DELETE FROM `leaverequests` WHERE (`leaveRequests_ID` = ?);',[leaveRequest_ID]);}

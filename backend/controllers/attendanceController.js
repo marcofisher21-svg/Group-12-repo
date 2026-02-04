@@ -5,11 +5,13 @@ import {
   deleteAttendance_db
 } from "../models/attendanceModel.js";
 
+/* GET */
 export const getAttendance = async (req, res) => {
   const data = await getAttendance_db();
   res.json({ Attendance: data });
 };
 
+/* POST */
 export const postAttendance = async (req, res) => {
   const {
     attendancedID,
@@ -49,6 +51,7 @@ export const patchAttendance = async (req, res) => {
   res.json({ message: "Attendance record updated" });
 };
 
+/* DELETE*/
 export const deleteAttendance = async (req, res) => {
   const { attendancedID } = req.body;
   await deleteAttendance_db(attendancedID);

@@ -10,7 +10,7 @@ import {
 
 import { deleteAttendance, getAttendance, postAttendance , patchAttendance} from './controllers/attendanceController.js';
 
-import { getLeave, postLeave, patchLeave, deleteLeave} from './controllers/leaveController.js';
+import { getLeave,postLeave, patchLeave, deleteLeave} from './controllers/leaveController.js';
 
 const app = express();
 app.use(cors()); 
