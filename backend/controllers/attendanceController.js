@@ -1,6 +1,3 @@
-
-
-
 import {
   getAttendance_db,
   postAttendance_db,
@@ -30,7 +27,7 @@ export const postAttendance = async (req, res) => {
     image
   );
 
-  res.json({ message: 'Attendance added' });
+  res.json({ message: 'Attendance record was added' });
 };
 
 /* PATCH */
@@ -39,22 +36,21 @@ export const patchAttendance = async (req, res) => {
   const {
     attendancedID,
     attendanceDate,
-    status,
-    image
+    status
   } = req.body;
 
   await patchAttendance_db(
     attendancedID,
     attendanceDate,
     status,
-    employeeId,
+    employeeId
   );
 
-  res.json({ message: 'Attendance updated' });
+  res.json({ message: 'Attendance record was updated' });
 };
 
 export const deleteAttendance = async (req, res) => {
   const { employeeId } = req.params;
   await deleteAttendance_db(employeeId);
-  res.json({ message: 'Attendance deleted' });
+  res.json({ message: 'Attendance record was deleted' });
 };

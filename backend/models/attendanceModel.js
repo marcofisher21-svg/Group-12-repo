@@ -1,24 +1,27 @@
-import { getAttendance_db, patchAttendance_db, postAttendance_db, deleteAttendance_db } from "../db/attendance.js";
+import mysql from 'mysql2/promise';
 
-export const getAttendance = async (req, res) => {
-    const attendance = await getAttendance_db();
-    res.json({ Attendance: attendance });
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'Yaqoob_sams1',
+    database: 'moduleproject2_db',
+
+});
+
+export const getAttendance_db = async()=>{
+const [data]= await pool.query('SELECT * FROM attendance;');
+    return data;
 }
 
-export const patchAttendance = async (req, res) => {
-    let { attendanceDate, status, employeeId, attendancedID } = req.body;
-    await patchAttendance_db(attendanceDate, status, employeeId, attendancedID);
-    res.json({ attendance: 'Attendance updated' });
+export const patchAttendance_db = async(attendanceDate,status,employeeId,attendancedID)=>{
+   const [data]= await pool.query('UPDATE `attendance` SET `attendanceDate` =  COALESCE(?, attendanceDate), `status` = COALESCE(?,status ), `employeeId`= COALESCE(?, employeeId) WHERE `attendancedID` = ?;',[attendanceDate,status,employeeId,attendancedID]);
+   return data;
+}
+export const postAttendance_db=async(attendancedID,attendanceDate, status, employeeId)=>{
+    const [data]= await pool.query('INSERT INTO `attendance` (`attendancedID`, `attendanceDate`, `status`, `employeeId`) VALUES (?, ?, ?,?);',[attendancedID,attendanceDate, status, employeeId]);
+    return data;
 }
 
-export const postAttendance = async (req, res) => {
-    const { attendancedID, attendanceDate, status, employeeId } = req.body;
-    await postAttendance_db(attendancedID, attendanceDate, status, employeeId);
-    const attendance = await getAttendance_db();
-    res.json({ attendance })
-}
-
-export const deleteAttendance = async (req, res) => {
-    await deleteAttendance_db(req.params)
-    res.json({ attendance: 'deleted attendance record' })
+export const deleteAttendance_db=async(attendancedID)=>{
+    await pool.query('DELETE FROM `attendance` WHERE (`attendancedID`=?);',[attendancedID]);
 }
