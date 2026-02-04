@@ -35,25 +35,16 @@ export const postEmployee_db = async (
 
 /* PATCH */
 export const patchEmployee_db = async (
-  employeeId,
-  position,
-  department,
-  salary,
-  employmentHistory,
-  contact
+  name,employeeId,position,department,salary,employmentHistory,contact
 ) => {
   const [data] = await pool.query(
-    'UPDATE employeeinformation SET position = COALESCE(?, position), department = COALESCE(?, department), salary = COALESCE(?, salary), employmentHistory = COALESCE(?, employmentHistory), contact = COALESCE(?, contact) WHERE employeeId = ?;',
-    [position, department, salary, employmentHistory, contact, employeeId]
+    'UPDATE employeeinformation SET name = COALESCE(?,name), position = COALESCE(?, position), department = COALESCE(?, department), salary = COALESCE(?, salary), employmentHistory = COALESCE(?, employmentHistory), contact = COALESCE(?, contact) WHERE employeeId = ?;',
+    [name,position, department, salary, employmentHistory, contact, employeeId]
   );
   return data;
 };
 
 /* DELETE */
 export const deleteEmployee_db = async (employeeId) => {
-  const [data] = await pool.query(
-    'DELETE FROM employeeinformation WHERE employeeId = ?;',
-    [employeeId]
-  );
-  return data;
+  await pool.query('DELETE FROM employeeinformation WHERE employeeId = ?;',[employeeId]);
 };

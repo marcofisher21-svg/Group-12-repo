@@ -10,7 +10,7 @@ import {
 export const getEmployees = async (req, res) => {
   const data = await getEmployee_db();
   res.json({ employee: data });
-};
+};  
 
 /* POST */
 export const postEmployee = async (req, res) => {
@@ -43,6 +43,7 @@ export const postEmployee = async (req, res) => {
 export const patchEmployee = async (req, res) => {
   const { employeeId } = req.params;
   const {
+    name,
     position,
     department,
     salary,
@@ -52,6 +53,7 @@ export const patchEmployee = async (req, res) => {
 
   await patchEmployee_db(
     employeeId,
+    name,
     position,
     department,
     salary,
@@ -64,7 +66,6 @@ export const patchEmployee = async (req, res) => {
 
 /* DELETE */
 export const deleteEmployee = async (req, res) => {
-  const { employeeId } = req.params;
-  await deleteEmployee_db(employeeId);
+  await deleteEmployee_db(req.body.employeeId);
   res.json({ message: 'Employee deleted' });
 };
