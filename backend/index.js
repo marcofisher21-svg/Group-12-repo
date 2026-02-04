@@ -16,10 +16,10 @@ app.post('/employee', postEmployee);
 app.patch('/employee/:employeeId', patchEmployee);
 app.delete('/employee/:employeeId', deleteEmployee);
 
-app.get('/attendance ', getAttendance);
+app.get('/attendance', getAttendance);
 app.post('/attendance', postAttendance);
-app.patch('/attendance/:AttendancedId', patchAttendance);
-app.delete('/attendance/:AttendancedId', deleteAttendance);
+app.patch('/attendance/:attendancedID', patchAttendance);
+app.delete('/attendance/:attendancedID', deleteAttendance);
 
 app.listen(2006, () => {
   console.log('http://localhost:2006');

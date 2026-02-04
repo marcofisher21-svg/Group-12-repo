@@ -32,25 +32,27 @@ export const postAttendance = async (req, res) => {
 
 /* PATCH */
 export const patchAttendance = async (req, res) => {
-  const { employeeId } = req.params;
+  const { attendancedID } = req.params;
   const {
-    attendancedID,
-    attendanceDate,
-    status
-  } = req.body;
-
-  await patchAttendance_db(
-    attendancedID,
     attendanceDate,
     status,
     employeeId
+  } = req.body;
+
+  await patchAttendance_db(
+    attendanceDate,
+    status,
+    employeeId,
+    attendancedID
   );
 
-  res.json({ message: 'Attendance record was updated' });
+  res.json({ message: "Attendance record updated" });
 };
 
 export const deleteAttendance = async (req, res) => {
-  const { employeeId } = req.params;
-  await deleteAttendance_db(employeeId);
+  const { attendancedID } = req.body;
+  await deleteAttendance_db(attendancedID);
   res.json({ message: 'Attendance record was deleted' });
 };
+
+
