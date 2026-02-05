@@ -1,71 +1,62 @@
-import {
-  getEmployee_db,
-  postEmployee_db,
-  patchEmployee_db,
-  deleteEmployee_db
-} from "../models/employeeModel.js";
+// controllers/employeeController.js
+import { getEmployee_db, getTotalEmployees_db, postEmployee_db } from '../models/employeeModel.js';
 
-
-/* GET */
+// 🔹 Get all employees
 export const getEmployees = async (req, res) => {
-  const data = await getEmployee_db();
-  res.json({ employee: data });
-};  
+    try {
+        const data = await getEmployee_db();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch employees' });
+    }
+};
 
-/* POST */
+// 🔹 Get total employees
+export const getTotalEmployees = async (req, res) => {
+    try {
+        const total = await getTotalEmployees_db();
+
+        // 🔹 DEBUG: log what comes from DB
+        console.log('Total employees from DB:', total);
+
+        res.json({ total });
+    } catch (err) {
+        // 🔹 DEBUG: log the full error
+        console.error('Error in getTotalEmployees:', err);
+
+        res.status(500).json({ error: 'Failed to fetch total employees' });
+    }
+};
+
+// 🔹 Add a new employee
 export const postEmployee = async (req, res) => {
-  const {
-    employeeId,
-    name,
-    position,
-    department,
-    salary,
-    employmentHistory,
-    contact,
-    image
-  } = req.body;
+    try {
+        const {
+            employeeId,
+            name,
+            position,
+            department,
+            salary,
+            employmentHistory,
+            contact,
+            image
+        } = req.body;
 
-  await postEmployee_db(
-    employeeId,
-    name,
-    position,
-    department,
-    salary,
-    employmentHistory,
-    contact,
-    image
-  );
+        await postEmployee_db(
+            employeeId,
+            name,
+            position,
+            department,
+            salary,
+            employmentHistory,
+            contact,
+            image
+        );
 
-  res.json({ message: 'Employee added' });
-};
-
-/* PATCH */
-export const patchEmployee = async (req, res) => {
-  const { employeeId } = req.params;
-  const {
-    name,
-    position,
-    department,
-    salary,
-    employmentHistory,
-    contact
-  } = req.body;
-
-  await patchEmployee_db(
-    employeeId,
-    name,
-    position,
-    department,
-    salary,
-    employmentHistory,
-    contact
-  );
-
-  res.json({ message: 'Employee updated' });
-};
-
-/* DELETE */
-export const deleteEmployee = async (req, res) => {
-  await deleteEmployee_db(req.body.employeeId);
-  res.json({ message: 'Employee deleted' });
+        res.json({ message: 'Employee added' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to add employee' });
+    }
 };

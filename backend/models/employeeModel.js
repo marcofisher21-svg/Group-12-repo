@@ -1,50 +1,53 @@
+// models/employeeModel.js
 import mysql from 'mysql2/promise';
 
-const pool = mysql.createPool({
+// 🔹 DB connection using your credentials
+export const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Yaqoob_sams1',
+    password: 'Mercygrey99',
     database: 'moduleproject2_db',
-
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-
-/* GET */
+// 🔹 Get all employees
 export const getEmployee_db = async () => {
-  const [data] = await pool.query('SELECT * FROM employeeinformation;');
-  return data;
+    const [rows] = await pool.query('SELECT * FROM employeeInformation;');
+    return rows;
 };
 
-/* POST */
+// 🔹 Get total employees
+export const getTotalEmployees_db = async () => {
+    const [rows] = await pool.query('SELECT COUNT(*) as total FROM employeeInformation;');
+    return rows[0].total;
+};
+
+// 🔹 Add a new employee
 export const postEmployee_db = async (
-  employeeId,
-  name,
-  position,
-  department,
-  salary,
-  employmentHistory,
-  contact,
-  image
+    employeeId,
+    name,
+    position,
+    department,
+    salary,
+    employmentHistory,
+    contact,
+    image
 ) => {
-  const [data] = await pool.query(
-    'INSERT INTO employeeinformation (employeeId, name, position, department, salary, employmentHistory, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
-    [employeeId, name, position, department, salary, employmentHistory, contact, image]
-  );
-  return data;
-};
-
-/* PATCH */
-export const patchEmployee_db = async (
-  name,employeeId,position,department,salary,employmentHistory,contact
-) => {
-  const [data] = await pool.query(
-    'UPDATE employeeinformation SET name = COALESCE(?,name), position = COALESCE(?, position), department = COALESCE(?, department), salary = COALESCE(?, salary), employmentHistory = COALESCE(?, employmentHistory), contact = COALESCE(?, contact) WHERE employeeId = ?;',
-    [name,position, department, salary, employmentHistory, contact, employeeId]
-  );
-  return data;
-};
-
-/* DELETE */
-export const deleteEmployee_db = async (employeeId) => {
-  await pool.query('DELETE FROM employeeinformation WHERE employeeId = ?;',[employeeId]);
+    const query = `
+        INSERT INTO employeeInformation
+        (employeeId, name, position, department, salary, employmentHistory, contact, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    await pool.query(query, [
+        employeeId,
+        name,
+        position,
+        department,
+        salary,
+        employmentHistory,
+        contact,
+        image
+    ]);
 };
