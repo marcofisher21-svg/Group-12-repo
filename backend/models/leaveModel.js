@@ -16,7 +16,7 @@ const [data]= await pool.query('SELECT * FROM leaverequests;');
 
 /* POST */
 export const postLeave_db=async(leaveRequest_ID,leaveDate,reason,leaveStatus,employeeId)=>{
-    const [data] = await pool.query('INSERT INTO `moduleproject2_db`.`leaverequests` (`leaveRequests_ID`, `leaveDate`, `reason`, `lesveStatus`, `employeeId`) VALUES (?, ?, ?, ?, ?);',[leaveRequest_ID,leaveDate,reason,leaveStatus,employeeId]);
+    const [data] = await pool.query('INSERT INTO `moduleproject2_db`.`leaverequests` (`leaveRequests_ID`, `leaveDate`, `reason`, `leaveStatus`, `employeeId`) VALUES (?, ?, ?, ?, ?);',[leaveRequest_ID,leaveDate,reason,leaveStatus,employeeId]);
     return data;
 }
 

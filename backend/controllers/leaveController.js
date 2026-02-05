@@ -2,7 +2,7 @@ import {
   getLeave_db,
   postLeave_db,
   patchLeave_db,
-  deleteLeave_db
+  deleteLeave_db 
 } from "../models/leaveModel.js";
 
 /* GET */

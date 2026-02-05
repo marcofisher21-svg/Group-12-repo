@@ -1,34 +1,59 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/NavBar.vue"
 
-
-const getImage = (fileName) => {
-  return new URL(`../assets/employees/${fileName}`, import.meta.url).href
-}
-
+// 🔹 Reactive variables
 const employees = ref([])
 
+// 🔹 Function to dynamically load images from assets folder
+const getImage = (fileName) => {
+  try {
+    return new URL(`../assets/employees/${fileName}`, import.meta.url).href
+  } catch {
+    // fallback if image not found
+    return new URL(`../assets/employees/default.png`, import.meta.url).href
+  }
+}
+
+// 🔹 Fetch employee data from MySQL
 onMounted(async () => {
   try {
-    const res = await fetch('/employee_info.json')
+    const res = await fetch('http://localhost:2006/employee')
     if (!res.ok) throw new Error(res.statusText)
+
     const data = await res.json()
-    employees.value = data.employeeInformation
+    employees.value = data
   } catch (err) {
-    console.error('Failed to load employees', err)
+    console.error('Failed to load employees from MySQL', err)
   }
 })
-
 </script>
+
 <template>
   <NavBar />
-  
+
   <div class="container">
     <h5 class="page-title">Employee Information</h5>
-    <div class="employees-row">
-      <div v-for="employee in employees" :key="employee.employeeId" class="employee-card">
-       <img :src="getImage(employee.image)" class="card-img-top" alt="employee photo">
+
+    <!-- Loading message -->
+    <div v-if="employees.length === 0" class="no-data">
+      Loading employees from database...
+    </div>
+
+    <!-- Employee cards -->
+    <div class="employees-row" v-else>
+      <div
+        v-for="employee in employees"
+        :key="employee.employeeId"
+        class="employee-card"
+      >
+        <!-- Display image from assets folder -->
+        <img
+          :src="getImage(employee.image)"
+          class="card-img-top"
+          :alt="`Photo of ${employee.name}`"
+        />
+  
         <div class="card-body">
           <p class="name"><strong>{{ employee.name }}</strong></p>
           <p class="position"><strong>Position:</strong> {{ employee.position }}</p>
@@ -41,8 +66,8 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-<style scoped>
 
+<style scoped>
 .container {
   padding: 20px;
   max-width: 100%;
@@ -78,9 +103,9 @@ onMounted(async () => {
 }
 
 .card-img-top {
-  height: 220px;           
-  object-fit: cover;     
-  object-position: top;    
+  height: 220px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .card-body {
@@ -101,4 +126,10 @@ onMounted(async () => {
   color: #555;
 }
 
+.no-data {
+  text-align: center;
+  margin: 40px 0;
+  color: #888;
+  font-size: 1rem;
+}
 </style>
