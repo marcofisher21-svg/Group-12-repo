@@ -1,4 +1,10 @@
-import { getAllPayroll, addPayroll, updatePayroll, deletePayrollRecord } from '../models/payrollModel.js';
+// controllers/payrollController.js
+import {
+    getAllPayroll,
+    addPayroll,
+    updatePayroll,
+    deletePayrollRecord
+} from '../models/payrollModel.js';
 
 // Get all payroll records
 export const getPayroll = async (req, res) => {
