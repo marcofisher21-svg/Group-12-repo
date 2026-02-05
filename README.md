@@ -115,12 +115,19 @@ Troubleshooting
 Issue	Solution
 
 MySQL Connection Failed	
+
 1. Check MySQL service is running
-2. Verify password in .env
-3. Test: mysql -u root -p
+2. 
+3. Verify password in .env
+4. 
+5. Test: mysql -u root -p
+6. 
 Port 2006 already in use	Change PORT in .env or kill process: netstat -ano | findstr :2006
+
 CORS Errors	Ensure cors() middleware is enabled in index.js
+
 Vue Dev Server Not Starting	Check node_modules: rm -rf node_modules && npm install
+
 API Returns 404	Verify endpoint spelling and server is running
 
 group work on the frontend
