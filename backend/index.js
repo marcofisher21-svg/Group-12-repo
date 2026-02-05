@@ -8,7 +8,7 @@ import {
 } from './controllers/employeeController.js';
 
 //  Attendance controller functions (keep if you need them)
-import { deleteAttendance, getAttendance, postAttendance , patchAttendance } from './controllers/attendanceController.js';
+import { getAttendance } from './controllers/attendanceController.js';
 
 import { getLeave,patchLeave,postLeave,deleteLeave } from './controllers/leaveController.js'
 
