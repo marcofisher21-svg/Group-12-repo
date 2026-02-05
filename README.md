@@ -44,17 +44,17 @@ services.msc → Find "MySQL" → Start
 
 # 3.2) create database and import schema
 
-Connect to MySQL
+# Connect to MySQL
 mysql -u root -p
 
-Execute in MySQL
+# Execute in MySQL
 CREATE DATABASE IF NOT EXISTS moduleproject2_db;
 USE moduleproject2_db;
 
-Import schema
+# Import schema
 SOURCE Dump20260203.sql;
 
-Verify tables
+# Verify tables
 SHOW TABLES;
 
  Tables_in_moduleproject2_db
@@ -81,19 +81,21 @@ cd backend
 
 the terminal should display ``Bash backend`` on right hand side and update your file path
 
-Install dependencies
+# Install dependencies
 
 npm install
 
 Installs: express, mysql2, dotenv, cors
 
-Start development server
+# Start development server
 
 node index.js
+     OR
+nodemon index.js <= if this fails use
 
-nodemon index.js
+nodemon -- watch index.js
 
-Expected output:
+# Expected output:
 
 Server running on http://localhost:2006
 
@@ -103,7 +105,7 @@ Database connected successfully!
 
 using API's with thunderclient which can be installed from VS Code and used in VS Code
 
-Test endpoints
+# Test endpoints
 
 curl http://localhost:2006/employee
 
