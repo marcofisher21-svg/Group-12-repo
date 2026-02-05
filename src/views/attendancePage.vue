@@ -1,195 +1,166 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import axios from "axios";
 import NavBar from "@/components/NavBar.vue";
 
+/* ------------------- STATE ------------------- */
 const people = ref([]);
 const totalEmployees = ref(0);
-const totalLeaveRequests = ref(0);
 const totalAttendanceRecordings = ref(0);
-const filterStatus = ref('all');
-const leaveRequesters = ref([]); 
+const filterStatus = ref("all");
 
+/* ------------------- FILTERING ------------------- */
 const filteredAttendance = computed(() => {
-  if (filterStatus.value === 'all') {
+  if (filterStatus.value === "all") {
     return people.value;
   }
-  
-  if (filterStatus.value === 'present') {
-    return people.value.map(emp => ({
-      ...emp,
-      attendance: emp.attendance ? emp.attendance.filter(rec => 
-        String(rec.status).toLowerCase() === 'present'
-      ) : []
-    })).filter(emp => emp.attendance.length > 0);
-  }
 
-  if (filterStatus.value === 'absent') {
-    return people.value.map(emp => ({
+  return people.value
+    .map(emp => ({
       ...emp,
-      attendance: emp.attendance ? emp.attendance.filter(rec => 
-        String(rec.status).toLowerCase() === 'absent'
-      ) : []
-    })).filter(emp => emp.attendance.length > 0);
-  }
-
-  return people.value;
+      attendance: emp.attendance.filter(
+        rec => rec.status.toLowerCase() === filterStatus.value
+      )
+    }))
+    .filter(emp => emp.attendance.length > 0);
 });
 
-
+/* ------------------- FETCH FROM SQL ------------------- */
 onMounted(async () => {
   try {
-    const res = await fetch("/attendance.json");
-    const data = await res.json();
+    const res = await axios.get("http://localhost:2006/attendance");
 
-    const list = data.attendanceAndLeave || [];
-    people.value = list;
+    const grouped = {};
 
-    totalEmployees.value = list.length;
-    totalLeaveRequests.value = list.reduce((sum, p) => sum + (p.leaveRequests?.length || 0), 0);
-    totalAttendanceRecordings.value = list.reduce((sum, p) => sum + (p.attendance?.length || 0), 0);
+    res.data.forEach(record => {
+      if (!grouped[record.employeeId]) {
+        grouped[record.employeeId] = {
+          employeeId: record.employeeId,
+          name: record.employeeName,
+          attendance: []
+        };
+      }
 
-    leaveRequesters.value = list
-      .filter(emp => emp.leaveRequests && emp.leaveRequests.length > 0)
-      .map(emp => ({
-        name: emp.name,
-        requests: emp.leaveRequests
-      }));
+      grouped[record.employeeId].attendance.push({
+        date: record.attendanceDate,
+        status: record.status
+      });
+    });
 
+    people.value = Object.values(grouped);
+
+    totalEmployees.value = people.value.length;
+    totalAttendanceRecordings.value = people.value.reduce(
+      (sum, emp) => sum + emp.attendance.length,
+      0
+    );
   } catch (err) {
-    console.error("Error loading attendance.json:", err);
+    console.error("Attendance fetch failed:", err);
   }
 });
 
-const statusClass = (s) => {
-  if (!s) return ''
-  const str = String(s).toLowerCase()
-  if (str === 'present') return 'status-present'
-  if (str === 'absent') return 'status-absent'
-  return 'status-other'
-}
+/* ------------------- HELPERS ------------------- */
+const formatDate = (d) => new Date(d).toLocaleDateString();
 
+const statusClass = (s) => {
+  const v = s.toLowerCase();
+  if (v === "present") return "status-present";
+  if (v === "absent") return "status-absent";
+  return "status-other";
+};
 </script>
+
 <template>
   <NavBar />
-  <div id="outerCard" class="card-body">
 
+  <div id="outerCard" class="card-body">
     <h5 class="card-title">Attendance Overview</h5>
 
     <div class="container text-center mb-3">
       <div class="row">
         <div class="col">Employees: {{ totalEmployees }}</div>
-        <div class="col">Attendance Recordings: {{ totalAttendanceRecordings }}</div>
+        <div class="col">
+          Attendance Recordings: {{ totalAttendanceRecordings }}
+        </div>
       </div>
     </div>
-    <div>
+
     <div class="filters">
-       <button @click="filterStatus = 'absent'" :class="{ active: filterStatus === 'absent' }">
+      <button @click="filterStatus = 'absent'" :class="{ active: filterStatus === 'absent' }">
         Absent
       </button>
-     <button @click="filterStatus = 'present'" :class="{ active: filterStatus === 'present' }">
+      <button @click="filterStatus = 'present'" :class="{ active: filterStatus === 'present' }">
         Present
       </button>
       <button @click="filterStatus = 'all'" :class="{ active: filterStatus === 'all' }">
         All
       </button>
-     
     </div>
-
-  </div>
 
     <div class="card mt-3">
       <div id="attendanceCard" class="card-body">
         <h5 class="card-title">Attendance Records</h5>
 
-        <div v-if="people.length === 0" class="text-center">No attendance data found.</div>
+        <div v-if="people.length === 0" class="text-center">
+          No attendance data found.
+        </div>
 
         <div v-else>
-          <div v-for="emp in filteredAttendance" :key="emp.employeeId" class="mb-4">
-            <h6 style="background:#f7f9fb;padding:10px;border-radius:6px;margin:0">
-              <strong>{{ emp.name }}</strong> <small class="text-muted">(#{{ emp.employeeId }})</small>
+          <div
+            v-for="emp in filteredAttendance"
+            :key="emp.employeeId"
+            class="mb-4"
+          >
+            <h6 style="background:#f7f9fb;padding:10px;border-radius:6px">
+              <strong>{{ emp.name }}</strong>
+              <small class="text-muted">(#{{ emp.employeeId }})</small>
             </h6>
 
-            <div style="overflow-x:auto;margin-top:8px">
-              <table class="table table-sm table-bordered">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="rec in (emp.attendance || [])"
-                    :key="emp.employeeId + '-' + rec.date"
-                    :class="statusClass(rec.status)"
-                  >
-                    <td>{{ rec.date }}</td>
-                    <td>{{ rec.status }}</td>
-                  </tr>
-                  <tr v-if="!(emp.attendance && emp.attendance.length)">
-                    <td colspan="2" class="text-center">No attendance records for this employee.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table table-sm table-bordered mt-2">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="rec in emp.attendance"
+                  :key="rec.date"
+                  :class="statusClass(rec.status)"
+                >
+                  <td>{{ formatDate(rec.date) }}</td>
+                  <td>{{ rec.status }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
       </div>
     </div>
-
-
   </div>
 </template>
+
 <style scoped>
-
-
 #outerCard {
   background-color: aliceblue;
- width: 800px;
- padding:15px;
-  align-items: center;
-  justify-content: center;
+  width: 800px;
+  padding: 15px;
   margin: 5% auto;
-  box-shadow: 0 0 0.8px rgb(0, 0, 0);
   border-radius: 10px;
 }
 
-#attendanceCard {
-  margin:5px;
-}
-h1 {
-  text-align: center;
-  margin: 5px;
-}
-
-.status-present {
-  background-color: #d4edda; 
+.status-present td {
+  background: #d4edda;
   color: #155724;
 }
-
-.status-absent {
-  background-color: #f8d7da; 
+.status-absent td {
+  background: #f8d7da;
   color: #721c24;
 }
-
-.status-other {
-  background-color: #eef2f5; 
-  color: #333;
-}
-
-
-.status-present td {
-  background-color: #d4edda !important;
-  color: #155724 !important;
-}
-.status-absent td {
-  background-color: #f8d7da !important;
-  color: #721c24 !important;
-}
 .status-other td {
-  background-color: #eef2f5 !important;
-  color: #333 !important;
+  background: #eef2f5;
 }
 
 .filters {
@@ -197,36 +168,10 @@ h1 {
   display: flex;
   gap: 12px;
   justify-content: center;
-  flex-wrap: wrap;
-}
-
-.filters button {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  background: white;
-  color: #34495e;
-  transition: 0.25s ease;
 }
 
 .filters button.active {
   background: #1b263b;
   color: white;
 }
-
-.filters button:hover {
-  transform: translateY(-2px);
-}
-
-
-@media screen and (max-width: 768px) {
-  #outerCard {
-    width: 90%;
-    margin: 10% auto;
-  }
-  
-}
-
 </style>

@@ -1,38 +1,26 @@
-// index.js
 import express from 'express';
-import cors from 'cors'; 
+import cors from 'cors';
 
-// 🔹 Employee controller functions
+// Employee controllers (UNCHANGED)
 import {
     getEmployees,
-    getTotalEmployees,
-    // postEmployee,
-    // patchEmployee,
-    // deleteEmployee
+    getTotalEmployees
 } from './controllers/employeeController.js';
 
-// 🔹 Attendance controller functions (keep if you need them)
-import { deleteAttendance, getAttendance, postAttendance , patchAttendance } from './controllers/attendanceController.js';
+// Attendance controller
+import { getAttendance } from './controllers/attendanceController.js';
 
-const app = express();
-app.use(cors()); 
+const app = express(); // ✅ ONLY ONCE
+app.use(cors());
 app.use(express.json());
 
-// 🔹 Employee routes
+// Employee routes (DO NOT TOUCH)
 app.get('/employee', getEmployees);
-app.get('/employee/total', getTotalEmployees); // <-- total employees route
-// app.post('/employee', postEmployee);
-// app.patch('/employee/:employeeId', patchEmployee);
-// app.delete('/employee/:employeeId', deleteEmployee);
+app.get('/employee/total', getTotalEmployees);
 
-// 🔹 Attendance routes
+// Attendance route
 app.get('/attendance', getAttendance);
-app.post('/attendance', postAttendance);
-app.patch('/attendance/:attendancedID', patchAttendance);
-app.delete('/attendance/:attendancedID', deleteAttendance);
 
-// 🔹 Start server
 app.listen(2006, () => {
     console.log('Server running at http://localhost:2006');
 });
-
