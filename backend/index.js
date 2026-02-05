@@ -14,6 +14,9 @@ import {
 // 🔹 Attendance controller functions (keep if you need them)
 import { deleteAttendance, getAttendance, postAttendance , patchAttendance } from './controllers/attendanceController.js';
 
+// 🔹 Payroll controller functions
+import { getPayroll, postPayroll, patchPayroll, deletePayroll } from './controllers/payrollController.js';
+
 const app = express();
 app.use(cors()); 
 app.use(express.json());
@@ -30,6 +33,12 @@ app.get('/attendance', getAttendance);
 app.post('/attendance', postAttendance);
 app.patch('/attendance/:attendancedID', patchAttendance);
 app.delete('/attendance/:attendancedID', deleteAttendance);
+
+// 🔹 Payroll routes
+app.get('/payroll', getPayroll);
+app.post('/payroll', postPayroll);
+app.patch('/payroll/:payroll_id', patchPayroll);
+app.delete('/payroll/:payroll_id', deletePayroll);
 
 // 🔹 Start server
 app.listen(2006, () => {
