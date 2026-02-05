@@ -1,14 +1,10 @@
-// index.js
 import express from 'express';
-import cors from 'cors'; 
+import cors from 'cors';
 
-// 🔹 Employee controller functions
+// Employee controllers (UNCHANGED)
 import {
     getEmployees,
-    getTotalEmployees,
-    // postEmployee,
-    // patchEmployee,
-    // deleteEmployee
+    getTotalEmployees
 } from './controllers/employeeController.js';
 
 //  Attendance controller functions (keep if you need them)
@@ -18,22 +14,16 @@ import { getLeave,patchLeave,postLeave,deleteLeave } from './controllers/leaveCo
 
 
 
-const app = express();
-app.use(cors()); 
+const app = express(); // ✅ ONLY ONCE
+app.use(cors());
 app.use(express.json());
 
 // Employee routes
 app.get('/employee', getEmployees);
-app.get('/employee/total', getTotalEmployees); // <-- total employees route
-// app.post('/employee', postEmployee);
-// app.patch('/employee/:employeeId', patchEmployee);
-// app.delete('/employee/:employeeId', deleteEmployee);
+app.get('/employee/total', getTotalEmployees);
 
 // Attendance routes
 app.get('/attendance', getAttendance);
-app.post('/attendance', postAttendance);
-app.patch('/attendance/:attendancedID', patchAttendance);
-app.delete('/attendance/:attendancedID', deleteAttendance);
 
 app.get('/leave',getLeave)
 app.post('/leave', postLeave)
@@ -44,4 +34,3 @@ app.delete('/leave',deleteLeave)
 app.listen(2006, () => {
     console.log('Server running at http://localhost:2006');
 });
-
