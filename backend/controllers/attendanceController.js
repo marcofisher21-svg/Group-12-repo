@@ -1,4 +1,14 @@
+
 import { getAttendance_db } from '../models/attendanceModel.js';
+
+// controllers/attendanceController.js
+import {
+  getAttendance_db,
+  postAttendance_db,
+  patchAttendance_db,
+  deleteAttendance_db
+} from "../models/attendanceModel.js";
+
 
 export const getAttendance = async (req, res) => {
     try {
