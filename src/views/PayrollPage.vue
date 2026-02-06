@@ -1,38 +1,40 @@
 <template>
   <NavBar />
-  
+
   <div class="container">
     <h1>Payroll Records</h1>
-    
-    <!-- ADD PRINT BUTTON -->
+
     <div class="mb-3">
-      <button @click="printTable" class="btn btn-primary">Print Table</button>
-      <button @click="generatePayslip" class="btn btn-success ms-2">Generate PDF</button>
+      <button @click="printTable" class="btn btn-primary">
+        Print Table
+      </button>
+      <button @click="generatePayslip" class="btn btn-success ms-2">
+        Generate PDF
+      </button>
     </div>
-    
+
     <table id="payrollTable">
       <thead>
         <tr>
           <th>Employee ID</th>
-          <th>Base Salary</th>
-          <th>Bonus</th>
-          <th>Deductions</th>
-          <th>Total Pay</th>
-          <th>Pay Date</th>
-          <th>Actions</th> <!-- ADD ACTION COLUMN -->
+          <th>Hours Worked</th>
+          <th>Leave Deductions</th>
+          <th>Final Salary (ZAR)</th>
+          <th>Actions</th>
         </tr>
       </thead>
+
       <tbody>
         <tr v-for="payroll in payrolls" :key="payroll.payroll_id">
           <td>{{ payroll.employeeId }}</td>
-          <td>{{ payroll.baseSalary }}</td>
-          <td>{{ payroll.bonus }}</td>
-          <td>{{ payroll.deductions }}</td>
-          <td>{{ payroll.totalPay }}</td>
-          <td>{{ payroll.payDate }}</td>
-          <!-- ADD PRINT BUTTON PER ROW -->
+          <td>{{ payroll.hoursWorked }}</td>
+          <td>{{ payroll.leaveDeductions }}</td>
+          <td>{{ formatZAR(payroll.finalSalary) }}</td>
           <td>
-            <button @click="printPayslip(payroll)" class="btn btn-sm btn-outline-primary">
+            <button
+              @click="printPayslip(payroll)"
+              class="btn btn-sm btn-outline-primary"
+            >
               Print Payslip
             </button>
           </td>
@@ -48,6 +50,14 @@ import NavBar from '@/components/NavBar.vue';
 
 const payrolls = ref([]);
 
+// currency to South African Rand- cause we cant afford dollars
+const formatZAR = (amount) => {
+  return new Intl.NumberFormat('en-ZA', {
+    style: 'currency',
+    currency: 'ZAR'
+  }).format(amount);
+};
+
 const fetchPayroll = async () => {
   try {
     const res = await fetch('http://localhost:2006/payroll');
@@ -58,16 +68,17 @@ const fetchPayroll = async () => {
   }
 };
 
-// SIMPLE PRINT FUNCTION
 const printTable = () => {
   window.print();
 };
 
-// PRINT INDIVIDUAL PAYSLIP
+const generatePayslip = () => {
+  alert('PDF generation coming soon');
+};
+
 const printPayslip = (payroll) => {
-  // Create a new window with payslip format
   const payslipWindow = window.open('', '_blank');
-  
+
   payslipWindow.document.write(`
     <html>
       <head>
@@ -76,7 +87,6 @@ const printPayslip = (payroll) => {
           body { font-family: Arial, sans-serif; padding: 20px; }
           .payslip { border: 2px solid #333; padding: 20px; max-width: 600px; }
           .header { text-align: center; margin-bottom: 30px; }
-          .section { margin: 20px 0; }
           .row { display: flex; justify-content: space-between; margin: 8px 0; }
           .total { font-weight: bold; font-size: 18px; border-top: 2px solid #333; padding-top: 10px; }
           button { margin-top: 20px; padding: 10px 20px; }
@@ -86,37 +96,36 @@ const printPayslip = (payroll) => {
       <body>
         <div class="payslip">
           <div class="header">
-            <h1>Modern Tech Sulutions</h1>
+            <h1>Modern Tech Solutions</h1>
             <h2>PAYSLIP</h2>
-            <p>Pay Date: ${payroll.payDate}</p>
           </div>
-          
-          <div class="section">
-            <h3>Employee Information</h3>
-            <div class="row"><span>Employee ID:</span><span>${payroll.employeeId}</span></div>
+
+          <div class="row">
+            <span>Employee ID:</span>
+            <span>${payroll.employeeId}</span>
           </div>
-          
-          <div class="section">
-            <h3>Earnings</h3>
-            <div class="row"><span>Base Salary:</span><span>$${payroll.baseSalary}</span></div>
-            <div class="row"><span>Bonus:</span><span>$${payroll.bonus}</span></div>
+
+          <div class="row">
+            <span>Hours Worked:</span>
+            <span>${payroll.hoursWorked}</span>
           </div>
-          
-          <div class="section">
-            <h3>Deductions</h3>
-            <div class="row"><span>Total Deductions:</span><span>$${payroll.deductions}</span></div>
+
+          <div class="row">
+            <span>Leave Deductions:</span>
+            <span>${payroll.leaveDeductions} hrs</span>
           </div>
-          
-          <div class="section total">
-            <div class="row"><span>NET PAY:</span><span>$${payroll.totalPay}</span></div>
+
+          <div class="row total">
+            <span>NET PAY:</span>
+            <span>${formatZAR(payroll.finalSalary)}</span>
           </div>
-          
+
           <button onclick="window.print()">Print Payslip</button>
         </div>
       </body>
     </html>
   `);
-  
+
   payslipWindow.document.close();
 };
 
@@ -152,7 +161,6 @@ tr:hover {
 
 .btn {
   padding: 8px 16px;
-  border: none;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -172,7 +180,6 @@ tr:hover {
   color: #007bff;
   border: 1px solid #007bff;
 }
-
 .ms-2 {
   margin-left: 8px;
 }
@@ -182,8 +189,8 @@ tr:hover {
 }
 
 @media print {
-  .container { margin-top: 0; }
-  .btn { display: none; }
-  #payrollTable { width: 100%; }
+  .btn {
+    display: none;
+  }
 }
 </style>

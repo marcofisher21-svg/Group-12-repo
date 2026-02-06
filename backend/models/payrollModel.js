@@ -1,10 +1,10 @@
 import mysql from 'mysql2/promise';
 
-// 🔹 DB connection using your credentials (MATCHES employeeModel.js)
+//  DB connection using your credentials (MATCHES employeeModel.js)
 export const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'Mercygrey99',
+  password: 'Yaqoob_sams1',
   database: 'moduleproject2_db',
   waitForConnections: true,
   connectionLimit: 10,
