@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import NavBar from "@/components/NavBar.vue"
 
-// === State ===
+
 const totalEmployees = ref(0)
 const totalLeaveRequests = ref(0)
 const performanceList = ref([])
@@ -11,7 +11,7 @@ const performanceList = ref([])
 const calendarMonth = ref(new Date())
 const monthDays = ref([]) // days with leaves
 
-// === Fetch total employees ===
+
 const fetchTotalEmployees = async () => {
   try {
     const res = await axios.get('http://localhost:2006/employee/total')
@@ -19,14 +19,13 @@ const fetchTotalEmployees = async () => {
   } catch (err) { console.error(err) }
 }
 
-// === Fetch leaves and build calendar ===
+
 const fetchLeaves = async () => {
   try {
     const res = await axios.get('http://localhost:2006/leave')
     const leaves = res.data.Leave
     totalLeaveRequests.value = leaves.length
 
-    // Filter leaves for current month
     const year = calendarMonth.value.getFullYear()
     const month = calendarMonth.value.getMonth()
     const monthLeaves = leaves.filter(l => {
@@ -38,7 +37,7 @@ const fetchLeaves = async () => {
   } catch (err) { console.error(err) }
 }
 
-// === Fetch attendance for top performers ===
+
 const fetchTopAttendance = async () => {
   try {
     const res = await axios.get('http://localhost:2006/attendance')
@@ -62,7 +61,7 @@ const fetchTopAttendance = async () => {
   } catch (err) { console.error(err) }
 }
 
-// === Calendar generation ===
+
 const generateCalendar = (leaves) => {
   const year = calendarMonth.value.getFullYear()
   const month = calendarMonth.value.getMonth()
@@ -82,14 +81,14 @@ const generateCalendar = (leaves) => {
     days.push({ date, leaves: dayLeaves })
   }
 
-  // Add empty slots for alignment
+ 
   const offset = firstDay.getDay()
   for (let i = 0; i < offset; i++) days.unshift({ date: null, leaves: [] })
 
   monthDays.value = days
 }
 
-// === Helpers ===
+
 const isToday = (day) => {
   if (!day.date) return false
   const today = new Date()
@@ -106,7 +105,7 @@ const nextMonth = () => {
   fetchLeaves()
 }
 
-// === On mount ===
+
 onMounted(() => {
   fetchTotalEmployees()
   fetchLeaves()
@@ -118,10 +117,9 @@ onMounted(() => {
   <NavBar/>
   <div class="containerBox d-flex justify-content-center gap-5">
 
-    <!-- Left Stats -->
     <div class="sideBoxes">
 
-      <!-- Employees Card -->
+     
       <div class="card mb-3" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">Employees</h5>
@@ -130,7 +128,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Leave Requests -->
+    
       <div class="card text-center mb-3" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">Leave requests</h5>

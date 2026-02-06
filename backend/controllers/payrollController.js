@@ -1,4 +1,4 @@
-// controllers/payrollController.js
+
 import {
     getAllPayroll,
     addPayroll,

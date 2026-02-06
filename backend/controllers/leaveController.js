@@ -37,7 +37,7 @@ export const patchLeave = async (req, res) => {
 // DELETE leave request
 export const deleteLeave = async (req, res) => {
   try {
-    const { leaveRequests_ID } = req.body; // you can switch to req.params if needed
+    const { leaveRequests_ID } = req.body;
     await deleteLeave_db(leaveRequests_ID);
     res.json({ message: 'Leave request deleted' });
   } catch (err) {

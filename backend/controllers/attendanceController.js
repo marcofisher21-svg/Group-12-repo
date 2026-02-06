@@ -1,7 +1,4 @@
 
-
-
-// controllers/attendanceController.js
 import {
   getAttendance_db,
 //   postAttendance_db,

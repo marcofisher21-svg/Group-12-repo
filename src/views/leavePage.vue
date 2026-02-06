@@ -4,8 +4,6 @@ import NavBar from "@/components/NavBar.vue";
 
 const leaveRequests = ref([]);
 
-
-// Format date to YYYY-MM-DD
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
   const date = new Date(dateStr);
@@ -16,7 +14,6 @@ const formatDate = (dateStr) => {
 };
 
 
-//   Pending requests only
 const pendingRequests = computed(() => {
   return leaveRequests.value
     .map(emp => ({
@@ -26,7 +23,6 @@ const pendingRequests = computed(() => {
     .filter(emp => emp.requests.length > 0);
 });
 
-// colour codes depending on leave requests 
 const getStatusClass = (status) => {
   if (!status) return '';
   const str = String(status).toLowerCase();

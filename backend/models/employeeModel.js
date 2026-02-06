@@ -1,7 +1,7 @@
-// models/employeeModel.js
+
 import mysql from 'mysql2/promise';
 
-// 🔹 DB connection using your credentials
+//  DB connection using your credentials
 export const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -12,19 +12,19 @@ export const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// 🔹 Get all employees
+
 export const getEmployee_db = async () => {
     const [rows] = await pool.query('SELECT * FROM employeeInformation;');
     return rows;
 };
 
-// 🔹 Get total employees
+//  Get total employees
 export const getTotalEmployees_db = async () => {
     const [rows] = await pool.query('SELECT COUNT(*) as total FROM employeeInformation;');
     return rows[0].total;
 };
 
-// 🔹 Add a new employee
+// Add a new employee
 export const postEmployee_db = async (
     employeeId,
     name,

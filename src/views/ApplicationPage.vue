@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar.vue";
 
 const router = useRouter();
 
-// we only need employees to map name -> employeeId
+
 const employees = ref([]);
 
 onMounted(async () => {
@@ -53,7 +53,7 @@ const submitLeaveForm = async (e) => {
     if (!res.ok) throw new Error("Failed to submit leave request");
 
     alert("Leave request submitted successfully!");
-    router.push("/leave"); // this triggers leavePage.vue to fetch + update totals
+    router.push("/leave"); 
   } catch (err) {
     console.error(err);
     alert("Submission failed");

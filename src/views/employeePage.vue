@@ -2,20 +2,19 @@
 import { ref, onMounted } from 'vue'
 import NavBar from "@/components/NavBar.vue"
 
-// 🔹 Reactive variables
 const employees = ref([])
 
-// 🔹 Function to dynamically load images from assets folder
+
 const getImage = (fileName) => {
   try {
     return new URL(`../assets/employees/${fileName}`, import.meta.url).href
   } catch {
-    // fallback if image not found
+  
     return new URL(`../assets/employees/default.png`, import.meta.url).href
   }
 }
 
-// 🔹 Fetch employee data from MySQL
+
 onMounted(async () => {
   try {
     const res = await fetch('http://localhost:2006/employee')

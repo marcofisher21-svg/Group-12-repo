@@ -25,25 +25,3 @@ export const getAttendance_db = async () => {
 };
 
 
-// 🔹 Optional: Add new attendance (commented out for now)
-// export const postAttendance_db = async (attendancedID, attendanceDate, status, employeeId) => {
-//     const [data] = await pool.query(
-//         'INSERT INTO attendance (attendancedID, attendanceDate, status, employeeId) VALUES (?, ?, ?, ?);',
-//         [attendancedID, attendanceDate, status, employeeId]
-//     );
-//     return data;
-// };
-
-// 🔹 Optional: Update attendance (commented out for now)
-// export const patchAttendance_db = async (attendanceDate, status, employeeId, attendancedID) => {
-//     const [data] = await pool.query(
-//         'UPDATE attendance SET attendanceDate = COALESCE(?, attendanceDate), status = COALESCE(?, status), employeeId = COALESCE(?, employeeId) WHERE attendancedID = ?;',
-//         [attendanceDate, status, employeeId, attendancedID]
-//     );
-//     return data;
-// };
-
-// 🔹 Optional: Delete attendance (commented out for now)
-// export const deleteAttendance_db = async (attendancedID) => {
-//     await pool.query('DELETE FROM attendance WHERE attendancedID = ?;', [attendancedID]);
-// };
