@@ -1,7 +1,7 @@
 # Group-12-repo
 This is group 12's HR project 
 
-1. Clone the Repository
+# 1.) Clone the Repository
 
 Open your terminal and run:
 
@@ -11,31 +11,156 @@ Then enter the project folder:
 
 cd Group-12-repo
 
-2. Install Dependencies
+# 2.) Install Dependencies 
 
 Make sure you have Node.js 16+ installed.
 
-Install project packages:
+# 2.1) Install project packages:
 
+in VS Code terminal in gitBash
+
+cd Group-12-repo
+
+Install dependencies
 npm install
+Installs: vue, vue-router, axios, bootstrap
+
+Start development server
+npm run dev
+
+Expected output:
+Vite dev server running at:
+  ➜  Local:   http://localhost:5173/
 
 This will download all required dependencies listed in package.json.
 
-3. Run the Development Server
+# 3.1) database configuration
 
-Start the Vue 3 app:
+Windows (Command Prompt as Admin)
+net start mysql
 
-npm run dev
+OR using Services
+services.msc → Find "MySQL" → Start
 
-Vite will launch a local server.
-Your project will be available at:
+# 3.2) create database and import schema
 
-http://localhost:5173/
+# Connect to MySQL
+mysql -u root -p
 
-group work
+# Execute in MySQL
+CREATE DATABASE IF NOT EXISTS moduleproject2_db;
+USE moduleproject2_db;
 
-Mische worked on the loginpage,dashboard,navbar,applicationpage
+# Import schema
+SOURCE Dump20260203.sql;
+
+# Verify tables
+SHOW TABLES;
+
+ Tables_in_moduleproject2_db
+
+ employeeinformation        
+ attendance                 
+ payroll                    
+ leaverequests   
+
+ # 3.3) create .env file in backend folder
+
+.env file mockup``
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password_here
+DB_NAME=moduleproject2_db
+PORT=2006``
+
+# 4.) backend setup
+
+in VS Code terminal in GitBash ,create a new terminal entry with bash still visible
+
+cd backend 
+
+the terminal should display ``Bash backend`` on right hand side and update your file path
+
+# Install dependencies
+
+npm install
+
+Installs: express, mysql2, dotenv, cors
+
+# Start development server
+
+node index.js
+     OR
+nodemon index.js <= if this fails use
+
+nodemon -- watch index.js
+
+# Expected output:
+
+Server running on http://localhost:2006
+
+Database connected successfully!
+
+# 4.1) test backend 
+
+using API's with thunderclient which can be installed from VS Code and used in VS Code
+
+# Test endpoints
+
+curl http://localhost:2006/employee
+
+curl http://localhost:2006/employee/total
+
+curl http://localhost:2006/attendance
+  
+# 4.2) Troubleshooting
+
+Common Issues & Solutions
+  
+Issue	Solution
+
+MySQL Connection Failed	
+
+1. Check MySQL service is running
+2. Verify password in .env
+3. Test: mysql -u root -p
+
+Port 2006 already in use	Change PORT in .env or kill process: netstat -ano | findstr :2006
+
+CORS Errors	Ensure cors() middleware is enabled in index.js
+
+Vue Dev Server Not Starting	Check node_modules: rm -rf node_modules && npm install
+
+API Returns 404	Verify endpoint spelling and server is running
+
+# 5.) group work on the frontend
+
+Misché worked on the loginpage,dashboard,navbar,applicationpage and styling
 
 Yaqoob worked on the attendancepage,employeepage,leavepage
 
-Marco worked on the payrollpage and added images to employee profiles (and the styles that were not included)
+Marco worked on the payrollpage and added images to employee profiles
+
+# 6.) group work on backend
+
+Misché worked on backend:
+                  frontend integration for employee,leave,attendance,dashboard,application,
+                  routing employee,
+                  error handling for employee and
+                  reviewed and refined the backend code.
+
+Yaqoob worked on backend: 
+                  sql data conversion for all the pages, 
+                  QA testing,
+                  routing leaverequests and
+                  error handling for leaverequests.
+
+Marco worked on backend:
+                  security,
+                  error handling for payroll,attendance,
+                  validation for the rest of the pages,
+                  routing attendance and payroll,
+                  assisted Yaqoob in redisplaying the employee images using SQL data in the employee page and
+                  and this read.me file.
+
+This project demonstrates full-stack development skills with modern web technologies, proper database design, and team collaboration.
