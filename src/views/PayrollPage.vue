@@ -19,7 +19,7 @@
           <th>Employee ID</th>
           <th>Hours Worked</th>
           <th>Leave Deductions</th>
-          <th>Final Salary (ZAR)</th>
+          <th>Final Salary</th>
           <th>Actions</th>
         </tr>
       </thead>
