@@ -142,27 +142,27 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin-top: 20px;
-  background-color: white; /* ADD THIS LINE */
+  background-color: white; 
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
-  background-color: white; /* ADD THIS LINE - makes all cells white */
+  background-color: white; 
 }
 
 th {
-  background-color: #f2f2f2; /* This stays light gray for headers */
+  background-color: #f2f2f2;
   font-weight: bold;
 }
 
-/* CHANGE THIS ENTIRE RULE */
+
 tr:hover {
-  background-color: #f8f9fa; /* Lighter hover color instead of #f5f5f5 */
+  background-color: #f8f9fa; 
 }
 
-/* ADD THIS RULE to ensure all rows are white */
+
 tbody tr {
   background-color: white;
 }
@@ -201,7 +201,6 @@ tbody tr {
     display: none;
   }
   
-  /* ADD THESE PRINT RULES */
   th, td {
     background-color: white !important;
   }
