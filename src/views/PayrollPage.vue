@@ -142,21 +142,29 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin-top: 20px;
+  background-color: white; /* ADD THIS LINE */
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
+  background-color: white; /* ADD THIS LINE - makes all cells white */
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #f2f2f2; /* This stays light gray for headers */
   font-weight: bold;
 }
 
+/* CHANGE THIS ENTIRE RULE */
 tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f8f9fa; /* Lighter hover color instead of #f5f5f5 */
+}
+
+/* ADD THIS RULE to ensure all rows are white */
+tbody tr {
+  background-color: white;
 }
 
 .btn {
@@ -191,6 +199,15 @@ tr:hover {
 @media print {
   .btn {
     display: none;
+  }
+  
+  /* ADD THESE PRINT RULES */
+  th, td {
+    background-color: white !important;
+  }
+  
+  tbody tr {
+    background-color: white !important;
   }
 }
 </style>
