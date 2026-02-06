@@ -3,13 +3,12 @@ import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import NavBar from "@/components/NavBar.vue";
 
-/* ------------------- STATE ------------------- */
+
 const people = ref([]);
 const totalEmployees = ref(0);
 const totalAttendanceRecordings = ref(0);
 const filterStatus = ref("all");
 
-/* ------------------- FILTERING ------------------- */
 const filteredAttendance = computed(() => {
   if (filterStatus.value === "all") {
     return people.value;
@@ -25,7 +24,6 @@ const filteredAttendance = computed(() => {
     .filter(emp => emp.attendance.length > 0);
 });
 
-/* ------------------- FETCH FROM SQL ------------------- */
 onMounted(async () => {
   try {
     const res = await axios.get("http://localhost:2006/attendance");
@@ -59,7 +57,6 @@ onMounted(async () => {
   }
 });
 
-/* ------------------- HELPERS ------------------- */
 const formatDate = (d) => new Date(d).toLocaleDateString();
 
 const statusClass = (s) => {
