@@ -145,21 +145,18 @@ Marco worked on the payrollpage and added images to employee profiles
 
 Misché worked on backend:
                   frontend integration for employee,leave,attendance,dashboard,application,
-                  routing employee,
+                  routing attendance application,employee,
                   error handling for employee and
-                  reviewed and refined the backend code.
+                  reviewed and refined the code.
 
 Yaqoob worked on backend: 
                   sql data conversion for all the pages, 
-                  QA testing,
                   routing leaverequests and
                   error handling for leaverequests.
 
 Marco worked on backend:
-                  security,
                   error handling for payroll,attendance,
-                  validation for the rest of the pages,
-                  routing attendance and payroll,
+                  routing payroll,
                   assisted Yaqoob in redisplaying the employee images using SQL data in the employee page and
                   and this read.me file.
 
