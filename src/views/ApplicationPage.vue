@@ -1,132 +1,73 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import NavBar from "@/components/NavBar.vue";
 
-const newLeaveRequests = ref([]);
-const newAttendance = ref([]);
-const totalLeaveRequests = ref(0);
-const totalAttendanceRecordings = ref(0);
+const router = useRouter();
 
-const combinedLeaveRequesters = computed(() => newLeaveRequests.value);
-const combinedAttendance = computed(() => newAttendance.value);
+// we only need employees to map name -> employeeId
+const employees = ref([]);
 
-onMounted(() => {
-  const savedLeave = localStorage.getItem('newLeaveRequests');
-  if (savedLeave) {
-    newLeaveRequests.value = JSON.parse(savedLeave);
-  }
-  
-  const savedAttendance = localStorage.getItem('newAttendance');
-  if (savedAttendance) {
-    newAttendance.value = JSON.parse(savedAttendance);
+onMounted(async () => {
+  try {
+    const res = await fetch("http://localhost:2006/employee");
+    if (res.ok) {
+      employees.value = await res.json();
+    }
+  } catch (err) {
+    console.error("Failed to load employees:", err);
   }
 });
 
-const submitAttendanceForm = (e) => {
+const submitLeaveForm = async (e) => {
   e.preventDefault();
-  
-  const fullName = document.getElementById("attendanceFullName").value.trim();
-  const status = document.getElementById("attendanceStatus").value;
-  const date = document.getElementById("attendanceDate").value;
 
-  if (!fullName || status === "Select an option" || !date) {
-    alert("Please fill in all required fields");
-    return;
-  }
-
-  const existingEmp = newAttendance.value.find(emp => emp.name === fullName);
-  
-  const newRecord = {
-    date,
-    status,
-  };
-
-  if (existingEmp) {
-    existingEmp.attendance.push(newRecord);
-  } else {
-    newAttendance.value.push({
-      name: fullName,
-      attendance: [newRecord],
-    });
-  }
-
-  localStorage.setItem('newAttendance', JSON.stringify(newAttendance.value));
-
-  totalAttendanceRecordings.value = combinedAttendance.value.reduce(
-    (acc, emp) => acc + emp.attendance.length,
-    0
-  );
-
-  alert("Attendance recorded successfully!");
-
-  document.getElementById("attendanceFullName").value = "";
-  document.getElementById("attendanceStatus").value = "Select an option";
-  document.getElementById("attendanceDate").value = "";
-};
-
-const submitLeaveForm = (e) => {
-  e.preventDefault();
-  
   const fullName = document.getElementById("leaveFullName").value.trim();
   const entitlement = document.getElementById("leaveEntitlement").value;
   const startDate = document.getElementById("leave_start_date").value;
   const endDate = document.getElementById("leave_end_date").value;
-  const session = document.getElementById("leaveSession").value;
   const reason = document.getElementById("leaveReason").value.trim();
 
   if (!fullName || entitlement === "Select an option" || !startDate || !endDate || !reason) {
     alert("Please fill in all required fields (Full Name, Entitlement, From, To, Reason)");
     return;
   }
-  
+
   if (new Date(endDate) < new Date(startDate)) {
     alert("End date cannot be before start date");
     return;
   }
 
-  const existingEmp = newLeaveRequests.value.find(emp => emp.name === fullName);
-  
-  const newRequest = {
-    date: startDate === endDate ? startDate : `${startDate} to ${endDate}`,
-    reason,
-    status: "Pending",
-    entitlement,
-    session,
-  };
-
-  if (existingEmp) {
-    existingEmp.requests.push(newRequest);
-  } else {
-    newLeaveRequests.value.push({
-      name: fullName,
-      requests: [newRequest],
+  try {
+    const res = await fetch("http://localhost:2006/application/leave", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName,
+        startDate,
+        endDate,
+        reason
+      })
     });
+
+    if (!res.ok) throw new Error("Failed to submit leave request");
+
+    alert("Leave request submitted successfully!");
+    router.push("/leave"); // this triggers leavePage.vue to fetch + update totals
+  } catch (err) {
+    console.error(err);
+    alert("Submission failed");
   }
-
-  localStorage.setItem('newLeaveRequests', JSON.stringify(newLeaveRequests.value));
-
-  totalLeaveRequests.value = combinedLeaveRequesters.value.reduce(
-    (acc, emp) => acc + emp.requests.length,
-    0
-  );
-
-  alert("Leave request submitted successfully!");
-
-  document.getElementById("leaveFullName").value = "";
-  document.getElementById("leaveEntitlement").value = "Select an option";
-  document.getElementById("leave_start_date").value = "";
-  document.getElementById("leave_end_date").value = "";
-  document.getElementById("leaveSession").value = "Full Day";
-  document.getElementById("leaveReason").value = "";
 };
 </script>
+
 
 <template>
 <NavBar />
 
 <div class="container">
-  <div class="heading">Attendance Application</div>
-  <form class="form" @submit="submitAttendanceForm">
+  <div class="heading">Leave Application</div>
+ <!---- <form class="form" @submit="submitAttendanceForm">
     <div class="input-field">
       <label for="attendanceFullName">Full Name <span class="required">*</span></label>
       <input type="text" id="attendanceFullName" placeholder="Enter your full name" required>
@@ -149,11 +90,11 @@ const submitLeaveForm = (e) => {
     <div class="btn-container">
       <button type="submit" class="btn">Submit</button>
     </div>
-  </form>
+  </form>-->
 </div>
 
 <div class="container">
-  <div class="heading">Leave Application</div>
+
   <form class="form" @submit="submitLeaveForm">
     <div class="input-field">
       <label for="leaveFullName">Full Name <span class="required">*</span></label>

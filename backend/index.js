@@ -15,6 +15,7 @@ import { getLeave,patchLeave,postLeave,deleteLeave } from './controllers/leaveCo
 
 // 🔹 Payroll controller functions
 import { getPayroll, postPayroll, patchPayroll, deletePayroll } from './controllers/payrollController.js';
+import { postLeaveApplication } from './controllers/applicationController.js';
 
 const app = express();
 app.use(cors()); 
@@ -30,7 +31,7 @@ app.get('/attendance', getAttendance);
 
 app.get('/leave',getLeave)
 app.post('/leave', postLeave)
-app.patch('/leave',patchLeave)
+app.patch('/leave/:leaveRequests_ID', patchLeave);
 app.delete('/leave',deleteLeave)
 
 // Start server
@@ -40,6 +41,10 @@ app.get('/payroll', getPayroll);
 app.post('/payroll', postPayroll);
 app.patch('/payroll/:payroll_id', patchPayroll);
 app.delete('/payroll/:payroll_id', deletePayroll);
+
+// 🔹 Leave application route
+app.post('/application/leave', postLeaveApplication);
+
 
 // 🔹 Start server
 app.listen(2006, () => {
