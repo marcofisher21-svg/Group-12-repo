@@ -45,7 +45,7 @@ const approveRequest = async (emp, req) => {
       body: JSON.stringify({ leaveStatus: 'Approved' })
     });
     if (!res.ok) throw new Error('Failed to approve');
-    req.leaveStatus = 'Approved'; // update local state
+    req.leaveStatus = 'Approved'; 
   } catch (err) {
     console.error(err);
   }
