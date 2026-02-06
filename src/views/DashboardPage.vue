@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import NavBar from "@/components/NavBar.vue"
 
 // === State ===
 const totalEmployees = ref(0)
@@ -114,6 +115,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <NavBar/>
   <div class="containerBox d-flex justify-content-center gap-5">
 
     <!-- Left Stats -->
@@ -235,7 +237,7 @@ onMounted(() => {
     color: black;
      width: 100%;
      }
-     
+
 .calendar-header button {
    cursor: pointer;
    }
