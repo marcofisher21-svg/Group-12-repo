@@ -4,17 +4,17 @@ import NavBar from "@/components/NavBar.vue"
 
 const employees = ref([])
 
-
+// 🔹 Get employee image from local assets, fallback to default.png
 const getImage = (fileName) => {
+  if (!fileName) return new URL('../assets/employees/default.png', import.meta.url).href
   try {
     return new URL(`../assets/employees/${fileName}`, import.meta.url).href
   } catch {
-  
-    return new URL(`../assets/employees/default.png`, import.meta.url).href
+    return new URL('../assets/employees/default.png', import.meta.url).href
   }
 }
 
-
+// 🔹 Fetch employees from backend
 onMounted(async () => {
   try {
     const res = await fetch('http://localhost:2006/employee')
@@ -46,13 +46,12 @@ onMounted(async () => {
         :key="employee.employeeId"
         class="employee-card"
       >
-        <!-- Display image from assets folder -->
         <img
           :src="getImage(employee.image)"
           class="card-img-top"
           :alt="`Photo of ${employee.name}`"
         />
-  
+
         <div class="card-body">
           <p class="name"><strong>{{ employee.name }}</strong></p>
           <p class="position"><strong>Position:</strong> {{ employee.position }}</p>
